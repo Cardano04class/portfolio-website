@@ -3,27 +3,27 @@
 :root {
   --primary-color: #478079;
   --primary-hover: #2c4f4a;
-  --bg-color: #ffffff;
-  --bg-card: #f8f9fa;
-  --text-main: #212529;
-  --text-muted: #6c757d;
-  --border-color: #dee2e6;
-  --navbar-bg: rgba(255, 255, 255, 0.95);
-  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  --bg-color: #fffcf3;
+  --bg-card: #fcf9f2;
+  --text-main: #111111;
+  --text-muted: #555555;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --navbar-bg: rgba(255, 252, 243, 0.92);
+  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.04);
   --font-sans: 'Inter', -apple-system, sans-serif;
-  --transition: all 0.3s ease-in-out;
+  --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme='dark'] {
   --primary-color: #5aa397;
   --primary-hover: #7dbdb1;
-  --bg-color: #121212;
-  --bg-card: #1e1e1e;
+  --bg-color: #0c0c0c;
+  --bg-card: #141414;
   --text-main: #f8f9fa;
-  --text-muted: #adb5bd;
-  --border-color: #2d2d2d;
-  --navbar-bg: rgba(18, 18, 18, 0.95);
-  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+  --text-muted: #a0a0a0;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --navbar-bg: rgba(12, 12, 12, 0.92);
+  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -41,7 +41,7 @@ body {
   color: var(--text-main);
   font-family: var(--font-sans);
   line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-x: hidden;
 }
 
@@ -569,4 +569,112 @@ footer.adritian-footer {
   text-align: center;
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+/* --- High-Fidelity Mobile Responsiveness Upgrades --- */
+@media (max-width: 768px) {
+  /* Navbar responsiveness */
+  .adritian-navbar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem 1rem;
+  }
+  
+  /* Container margins */
+  .adritian-container {
+    padding: 8rem 1rem 2rem;
+  }
+  
+  /* Hero centering */
+  .hero-showcase {
+    text-align: center;
+  }
+  .platform-icons-row {
+    justify-content: center;
+  }
+  
+  /* Profile centering and float reset */
+  .profile-box-showcase, .profile-box-about {
+    justify-content: center;
+  }
+  
+  /* About split centering */
+  .about-columns-split {
+    gap: 2rem;
+  }
+  .about-columns-split .my-auto {
+    text-align: center;
+  }
+  
+  /* Interactive job timeline */
+  .experience-layout-split {
+    gap: 1.5rem;
+  }
+  .experience-block-item {
+    margin-bottom: 0.8rem;
+    padding: 1.2rem;
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--border-color);
+  }
+  .experience-block-item.active {
+    border-left-color: var(--primary-color);
+    background-color: rgba(71, 128, 121, 0.04);
+  }
+  .exp-detail-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 991px) {
+  /* Alternating portfolio showcases layout consistency on mobile (Image first, text below) */
+  .adritian-work-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 0;
+    text-align: center;
+  }
+  .adritian-work-row.reverse-row {
+    display: flex;
+    flex-direction: column;
+  }
+  .adritian-work-row:not(.reverse-row) {
+    flex-direction: column-reverse;
+  }
+  .adritian-work-row > div {
+    width: 100%;
+  }
+  .work-image-frame {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+/* --- State-of-the-Art Liquid View Transition Reveal --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Ensure the incoming theme is layered correctly on top of the old theme during swipe */
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+[data-theme='dark']::view-transition-old(root) {
+  z-index: 9999;
+}
+[data-theme='dark']::view-transition-new(root) {
+  z-index: 1;
 }

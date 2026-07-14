@@ -66,8 +66,40 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const doc = document as any;
+    if (!doc.startViewTransition) {
+      setTheme(prev => prev === 'light' ? 'dark' : 'light');
+      return;
+    }
+
+    const x = event.clientX;
+    const y = event.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = doc.startViewTransition(() => {
+      setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`
+      ];
+      document.documentElement.animate(
+        {
+          clipPath: theme === 'light' ? [...clipPath].reverse() : clipPath,
+        },
+        {
+          duration: 500,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          pseudoElement: theme === 'light' ? '::view-transition-old(root)' : '::view-transition-new(root)',
+        }
+      );
+    });
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -184,6 +216,18 @@ export default function App() {
 
   return (
     <>
+      {/* Light Mode Noise Overlay - Tactile Cardstock effect */}
+      {theme === 'light' && (
+        <div 
+          className="pointer-events-none fixed inset-0 opacity-40 mix-blend-multiply" 
+          style={{
+            zIndex: 9999,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`,
+            backgroundSize: '150px 150px'
+          }}
+        />
+      )}
+
       {/* Header Navigation */}
       <header className="adritian-header">
         <nav className="adritian-navbar">
