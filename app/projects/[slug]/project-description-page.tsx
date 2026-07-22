@@ -56,7 +56,7 @@ export default function ProjectDescriptionPage({
                             fill
                             priority
                             sizes="100vw"
-                            className="object-cover object-center"
+                            className="object-contain object-center p-4 sm:p-8"
                         />
                         <div
                             className="absolute inset-0 bg-linear-to-b from-black/55 via-black/15 to-black/55 sm:from-black/50 sm:via-black/10 sm:to-black/50"

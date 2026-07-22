@@ -136,7 +136,7 @@ const ProjectsDesktopGallery = memo(function ProjectsDesktopGallery({
                                             alt={p.title}
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 65vw"
-                                            className="object-cover object-center"
+                                            className="object-contain object-center p-2 sm:p-4"
                                             priority={index === 0}
                                         />
                                     </div>
@@ -457,7 +457,7 @@ export default function Projects() {
                                             alt={project.title}
                                             fill
                                             sizes="100vw"
-                                            className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+                                            className="object-contain object-center transition-transform duration-500 group-hover:scale-[1.02] p-2 sm:p-3"
                                             priority={index === 0}
                                         />
                                         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent" />
@@ -534,7 +534,7 @@ export default function Projects() {
                                                 loading="eager"
                                                 decoding="async"
                                                 draggable={false}
-                                                className="pointer-events-none absolute inset-0 z-10 h-full w-full object-cover"
+                                                className="pointer-events-none absolute inset-0 z-10 h-full w-full object-contain p-2"
                                             />
                                             {isActive ? (
                                                 <motion.span
