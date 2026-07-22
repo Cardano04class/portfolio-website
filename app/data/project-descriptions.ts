@@ -4,7 +4,7 @@
  */
 export const PROJECT_DESCRIPTIONS: Readonly<Record<string, string>> = {
     "ft_transcendence":
-        "A premium-tier Single-Page Pong game arena featuring online matches, matchmaking lobbies, chat systems, and active user metric dashboards.",
+        "ClubsHub is a full-stack web platform built for 1337 School's club ecosystem. It enables students to discover clubs, manage events, communicate in real time via Socket.io, and interact with an AI-assisted RAG chatbot for instant platform information.",
     "inception":
         "A secure, multi-container virtualized web server infrastructure built inside Alpine Linux environments using Docker Compose pipelines.",
     "minishell":

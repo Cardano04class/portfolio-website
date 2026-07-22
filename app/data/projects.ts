@@ -19,16 +19,16 @@ type ProjectCore = Omit<Project, "description">;
 const projectCoreList: readonly ProjectCore[] = [
     {
         slug: "ft_transcendence",
-        title: "ft_transcendence: Multiplayer Web-Pong Arena",
-        role: "Full-Stack Developer",
+        title: "ft_transcendence: ClubsHub Ecosystem Platform",
+        role: "DevOps Engineer & Continuous Testing",
         highlights: [
-            "Architected real-time multiplayer Pong matches with active direct matchmaking lobbies.",
-            "Integrated interactive stats dashboard, detailed game history tables, and messaging channels.",
-            "Mitigated coordinates lag utilizing customized client predictions and linear interpolation."
+            "Engineered full-stack 1337 School club ecosystem with real-time Socket.io communication channels.",
+            "Integrated AI-powered RAG chatbot & event content moderation pipelines for automated community support.",
+            "Configured robust multi-container Docker & Nginx infrastructure with 42 OAuth, 2FA, and Redis rate-limiting."
         ],
-        tech: ["React", "TypeScript", "Next.js", "PostgreSQL", "Docker", "WebSockets"],
-        github: "https://github.com/Cardano04class",
-        live: "https://github.com/Cardano04class",
+        tech: ["React", "Node.js", "TypeScript", "Socket.io", "MongoDB", "Redis", "Docker", "AI / RAG"],
+        github: "https://github.com/Cardano04class/ft_transcendence",
+        live: "https://github.com/Cardano04class/ft_transcendence",
         featured: true,
         year: "2025",
         image: "/images/projects/transcendence.png"

@@ -126,15 +126,6 @@ export default function ProjectDescriptionPage({
                                 <p className="text-2xl font-black uppercase leading-[0.95] tracking-tight text-foreground sm:text-3xl md:text-4xl wrap-break-word">
                                     {project.title}
                                 </p>
-                                <a
-                                    href={project.live}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="mt-5 inline-block border-b border-foreground/25 pb-0.5 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:border-foreground/50 hover:text-foreground sm:text-xs"
-                                >
-                                    View live site
-                                </a>
-
                                 <dl className="mt-10 sm:mt-12">
                                     <MetaRow label="Year" value={project.year} />
                                     <MetaRow label="Role" value={project.role} />
@@ -153,14 +144,6 @@ export default function ProjectDescriptionPage({
                                         className="inline-flex w-full items-center justify-center border border-border px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/80 transition-colors hover:border-foreground/35 hover:bg-muted hover:text-foreground sm:w-auto"
                                     >
                                         View source
-                                    </a>
-                                    <a
-                                        href={project.live}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex w-full items-center justify-center rounded-full bg-foreground px-6 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-background transition-colors hover:bg-foreground/85 sm:w-auto"
-                                    >
-                                        Live demo
                                     </a>
                                 </div>
                             </div>
