@@ -1,32 +1,47 @@
-# React + TypeScript + Vite
+# DevByRoman - 2026 Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+![Next.js](https://img.shields.io/badge/Next.js-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue)
+![Tailwind](https://img.shields.io/badge/Tailwind-38BDF8)
 
-Currently, two official plugins are available:
+![Portfolio Preview](./public/projectPreview.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Modern software developer portfolio built with **Next.js, TypeScript, Tailwind CSS, and Framer Motion**.
 
-## React Compiler
+## Live Website
+[https://romancaseres.cloud](https://romancaseres.cloud)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
+- Minimal brutalist UI
+- Smooth section transitions
+- Responsive design
+- Selected work showcase
+- About and skills sections
+- Fast optimized Next.js build
 
-## Expanding the Oxlint configuration
+## Tech Stack
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Vercel
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Preview Sections
+- Hero
+- Web Dev / UI Systems
+- About + Stack
+- Featured Work
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Run Locally
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Contact
+- LinkedIn: [Add your LinkedIn URL]
+- GitHub: [https://github.com/mano-sudo](https://github.com/mano-sudo)
+- Portfolio: [https://romancaseres.cloud](https://romancaseres.cloud)
+
+
+
