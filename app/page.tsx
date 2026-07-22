@@ -9,8 +9,7 @@ const Marquee = dynamic(() => import("./components/sections/marquee"));
 const Stats = dynamic(() => import("./components/sections/stats"));
 const Projects = dynamic(() => import("./components/sections/projects"));
 const Skills = dynamic(() => import("./components/sections/skills"));
-const Achievements = dynamic(() => import("./components/sections/achievements"));
-const Testimonials = dynamic(() => import("./components/sections/testimonials"));
+// const Achievements = dynamic(() => import("./components/sections/achievements"));
 const Contact = dynamic(() => import("./components/sections/contact"));
 const Footer = dynamic(() => import("./components/footer"));
 
@@ -39,12 +38,9 @@ export default function Home() {
       <ScrollSection>
         <Skills />
       </ScrollSection>
-      <ScrollSection>
+      {/* <ScrollSection>
         <Achievements />
-      </ScrollSection>
-      <ScrollSection>
-        <Testimonials />
-      </ScrollSection>
+      </ScrollSection> */}
     
       <ScrollSection>
         <Contact />

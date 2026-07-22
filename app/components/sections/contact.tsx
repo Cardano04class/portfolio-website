@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@/app/hooks/useGSAP";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check } from "lucide-react";
+import { Mail, Github, Linkedin, Twitter, Instagram, ArrowUpRight, Copy, Check } from "lucide-react";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -15,9 +15,10 @@ export default function Contact() {
     const emailRef = useRef<HTMLAnchorElement>(null);
 
     const socialLinks = [
-        { name: "GitHub", icon: Github, url: "#" },
-        { name: "LinkedIn", icon: Linkedin, url: "#" },
-        { name: "Twitter", icon: Twitter, url: "#" }
+        { name: "GitHub", icon: Github, url: "https://github.com/Cardano04class" },
+        { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/mohamedamineamir/" },
+        { name: "Twitter", icon: Twitter, url: "https://x.com/cardano_class" },
+        { name: "Instagram", icon: Instagram, url: "https://www.instagram.com/ma04amir/" }
     ];
 
     const copyEmail = (e: React.MouseEvent) => {
@@ -94,13 +95,13 @@ export default function Contact() {
                                     Contact
                                 </span>
                             </div>
-                            <div className="overflow-hidden">
-                                <h2 className="contact-header-text block text-[clamp(3.5rem,9vw,8rem)] font-black uppercase leading-[0.9] text-foreground">
+                            <div className="overflow-hidden pb-1">
+                                <h2 className="contact-header-text block text-[clamp(2.5rem,6.5vw,6.2rem)] font-black uppercase leading-[0.95] tracking-tight text-foreground">
                                     Let's Work
                                 </h2>
                             </div>
-                            <div className="overflow-hidden">
-                                <h2 className="contact-header-text block text-[clamp(3.5rem,9vw,8rem)] font-black uppercase leading-[0.9] text-foreground/30">
+                            <div className="overflow-hidden pb-1">
+                                <h2 className="contact-header-text block text-[clamp(2.5rem,6.5vw,6.2rem)] font-black uppercase leading-[0.95] tracking-tight text-foreground/30">
                                     Together
                                 </h2>
                             </div>
@@ -117,6 +118,8 @@ export default function Contact() {
                                     <a 
                                         key={link.name}
                                         href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="group flex items-center justify-center w-12 h-12 rounded-full border border-border bg-muted/30 hover:bg-foreground hover:border-transparent transition-all duration-300"
                                         aria-label={link.name}
                                     >

@@ -3,7 +3,7 @@
 import { useGSAP } from "@/app/hooks/useGSAP";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, Github, Linkedin, Twitter, ArrowUp } from "lucide-react";
+import { Mail, Github, Linkedin, Twitter, Instagram, ArrowUp } from "lucide-react";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +14,7 @@ const socialLinks = [
     { name: "GitHub", icon: Github, url: "https://github.com/Cardano04class" },
     { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/mohamedamineamir/" },
     { name: "Twitter", icon: Twitter, url: "https://x.com/cardano_class" },
+    { name: "Instagram", icon: Instagram, url: "https://www.instagram.com/ma04amir/" },
 ];
 
 export default function Footer() {
@@ -53,7 +54,7 @@ export default function Footer() {
                         <div>
                             <span className="text-xs uppercase tracking-[0.3em] text-foreground/45 font-medium mb-6 block">Navigation</span>
                             <nav className="flex flex-col gap-3">
-                                {["About", "Work", "Testimonials", "Contact"].map((item) => (
+                                {["About", "Work", "Contact"].map((item) => (
                                     <a 
                                         key={item} 
                                         href={`#${item.toLowerCase()}`}
