@@ -8,7 +8,9 @@ import {
   Mail, 
   Menu, 
   X, 
-  ArrowUpRight 
+  ArrowUpRight,
+  MessageCircle,
+  Star
 } from 'lucide-react';
 
 const XIcon = ({ className }: { className?: string }) => (
@@ -39,46 +41,19 @@ const CheckIcon = ({ className }: { className?: string }) => (
 );
 
 function ScrollSection({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Failsafe in case of unsupported environment or extreme zoom levels
-    const timeout = setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 1500);
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-          clearTimeout(timeout);
-        }
-      },
-      {
-        threshold: 0.01,
-        rootMargin: '0px 0px -5% 0px',
-      }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      clearTimeout(timeout);
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
+    }, 50);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div
-      ref={ref}
       className={`transition-all duration-1000 ease-out transform ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       }`}
     >
       {children}
@@ -164,6 +139,10 @@ export default function App() {
   const [activeUsers, setActiveUsers] = useState<number>(1);
   const [copied, setCopied] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>('');
+  const [chatOpen, setChatOpen] = useState<boolean>(false);
+  const [chatMessages, setChatMessages] = useState<Array<{sender: 'bot' | 'user', text: string}>>([
+    { sender: 'bot', text: "Hi there! I'm Mohamed's portfolio assistant. Welcome! What are you looking to build or discover today?" }
+  ]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -217,6 +196,24 @@ export default function App() {
     navigator.clipboard.writeText('cardano_class@proton.me');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleChatChoice = (choice: string) => {
+    // add user message
+    setChatMessages(prev => [...prev, { sender: 'user', text: choice }]);
+    
+    // add timed bot reply
+    setTimeout(() => {
+      let reply = "";
+      if (choice.includes("Hire")) {
+        reply = "That's fantastic! I'd love to chat. You can drop me an email at cardano_class@proton.me, or click the COPY button inside the chat to copy it to your clipboard. I'll get back to you as soon as possible!";
+      } else if (choice.includes("skills")) {
+        reply = "I specialize in Fullstack development and DevOps. I design secure container networks with Docker, write optimized C algorithms, and build responsive web architectures with Next.js/React. You can scroll to my 'About' and 'Featured Work' sections for more detail!";
+      } else {
+        reply = "Hey! Thanks so much for stopping by my portfolio. It means a lot! Have an awesome day exploring my work, and feel free to reach out anytime.";
+      }
+      setChatMessages(prev => [...prev, { sender: 'bot', text: reply }]);
+    }, 700);
   };
 
   const gridBgRef = useRef<HTMLDivElement>(null);
@@ -372,7 +369,7 @@ export default function App() {
           aria-label="GitHub" 
           className="group flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border border-border/60 hover:border-foreground/45 bg-transparent text-foreground/55 hover:text-foreground hover:bg-muted/10 transition-all duration-300"
         >
-          <Github className="w-4.5 h-4.5 md:w-5 md:h-5 group-hover:scale-105 transition-transform" />
+          <Github className="w-5 h-5 group-hover:scale-105 transition-transform" />
         </a>
         <a 
           href="https://www.linkedin.com/in/mohamedamineamir/" 
@@ -381,7 +378,7 @@ export default function App() {
           aria-label="LinkedIn" 
           className="group flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border border-border/60 hover:border-foreground/45 bg-transparent text-foreground/55 hover:text-foreground hover:bg-muted/10 transition-all duration-300"
         >
-          <LinkedinIcon className="w-4.5 h-4.5 md:w-5 md:h-5 group-hover:scale-105 transition-transform" />
+          <LinkedinIcon className="w-5 h-5 group-hover:scale-105 transition-transform" />
         </a>
         <a 
           href="https://x.com/cardano_class" 
@@ -390,14 +387,14 @@ export default function App() {
           aria-label="X" 
           className="group flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border border-border/60 hover:border-foreground/45 bg-transparent text-foreground/55 hover:text-foreground hover:bg-muted/10 transition-all duration-300"
         >
-          <XIcon className="w-4 h-4 md:w-4.5 md:h-4.5 group-hover:scale-105 transition-transform" />
+          <XIcon className="w-4.5 h-4.5 group-hover:scale-105 transition-transform" />
         </a>
         <a 
           href="mailto:cardano_class@proton.me" 
           aria-label="Email" 
           className="group flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border border-border/60 hover:border-foreground/45 bg-transparent text-foreground/55 hover:text-foreground hover:bg-muted/10 transition-all duration-300"
         >
-          <Mail className="w-4.5 h-4.5 md:w-5 md:h-5 group-hover:scale-105 transition-transform" />
+          <Mail className="w-5 h-5 group-hover:scale-105 transition-transform" />
         </a>
       </div>
 
@@ -408,41 +405,61 @@ export default function App() {
           : 'border-b border-border/40 bg-background/70 py-3.5 pl-5 pr-4 backdrop-blur-md'
       } sm:py-4 sm:px-10 md:px-14 lg:px-24`}>
         <a href="#" className="inline-flex items-center text-sm font-black tracking-wider uppercase transition-opacity hover:opacity-80">
-          <span className="text-foreground/80">cardano</span>
-          <span className="text-primary">_class</span>
+          <span className="text-foreground/85 font-semibold leading-[0.88] tracking-[-0.03em] text-[clamp(0.65rem,3.2vw,0.95rem)] sm:text-[clamp(0.72rem,1.35vw,0.95rem)]">cardano_class</span>
         </a>
 
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-2 rounded-full px-2 py-0.5 text-foreground/70">
+        <div className="flex items-center gap-1.5 sm:gap-3">
+          {/* Active Users Indicator */}
+          <div className="flex items-center gap-1.5 rounded-xl px-2 py-0.5 text-foreground/70">
             <Users className="h-3.5 w-3.5 shrink-0 text-foreground/45" />
-            <span className="hidden sm:inline text-xs font-semibold uppercase tracking-widest">{activeUsers} active user{activeUsers > 1 ? 's' : ''}</span>
-            <span className="inline text-xs font-bold tabular-nums sm:hidden">{activeUsers}</span>
+            <span className="hidden lg:inline text-xs font-semibold tracking-wide">{activeUsers} active user{activeUsers > 1 ? 's' : ''}</span>
+            <span className="inline text-[11px] font-semibold tabular-nums lg:hidden">{activeUsers}</span>
           </div>
 
+          {/* Messages Button */}
+          <button 
+            onClick={() => setChatOpen(prev => !prev)}
+            type="button" 
+            className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 transition-all text-xs font-bold uppercase tracking-wider cursor-pointer ${
+              chatOpen 
+                ? 'border-primary bg-primary text-primary-foreground' 
+                : 'border-border bg-card text-foreground/80 hover:border-foreground/20 hover:bg-muted'
+            }`}
+            aria-label="Open chat assistant"
+          >
+            <MessageCircle className="h-3.5 w-3.5 shrink-0" />
+            <span className="hidden min-[420px]:inline text-[10px] font-semibold uppercase tracking-wide">Messages</span>
+          </button>
+
+          {/* GitHub Star Badge */}
           <a 
             href="https://github.com/Cardano04class" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-foreground/85 transition-all hover:bg-muted hover:border-foreground/20"
+            aria-label="Open GitHub repository"
           >
-            <Github className="h-3.5 w-3.5" />
-            <span className="hidden min-[450px]:inline">GitHub</span>
+            <Github className="h-3.5 w-3.5 shrink-0 text-foreground/70" />
+            <span className="text-[10px] font-semibold tabular-nums tracking-wide">2,026</span>
+            <Star className="h-3 w-3 shrink-0 fill-foreground/80 text-foreground/80" />
           </a>
 
+          {/* Theme Toggle */}
           <button 
             onClick={toggleTheme}
-            className="inline-flex items-center justify-center bg-transparent text-foreground/75 hover:text-foreground transition-colors p-1.5 focus:outline-none cursor-pointer"
+            className="inline-flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-foreground/75 hover:text-foreground hover:border-foreground/20 transition-colors focus:outline-none cursor-pointer"
             aria-label="Toggle color theme"
           >
-            {theme === 'light' ? <Moon className="h-4.5 w-4.5" /> : <Sun className="h-4.5 w-4.5" />}
+            {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </button>
 
+          {/* Hamburger Mobile Menu */}
           <button 
             onClick={() => setMobileMenuOpen(prev => !prev)}
-            className="inline-flex items-center justify-center bg-transparent text-foreground/75 hover:text-foreground transition-colors p-1.5 focus:outline-none cursor-pointer"
+            className="inline-flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-foreground/75 hover:text-foreground hover:border-foreground/20 transition-colors focus:outline-none cursor-pointer"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
       </nav>
@@ -514,10 +531,10 @@ export default function App() {
       </div>
 
       {/* main content layout */}
-      <main className="relative z-0 pt-20">
+      <main className="relative z-0 pt-24 sm:pt-28 md:pt-32">
         
         {/* HERO SECTION with live parallax grid shifting */}
-        <section className="relative min-h-[calc(100svh-5rem)] flex flex-col justify-center overflow-hidden pb-12">
+        <section className="relative overflow-hidden pt-4 pb-16 sm:pb-24 lg:pb-32">
           
           {/* Hardware-accelerated parallax back grid */}
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
@@ -528,7 +545,7 @@ export default function App() {
             />
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-[1920px] px-6 sm:px-10 md:px-16 lg:px-24">
+          <div className="relative z-10 mx-auto w-full max-w-[1920px] px-3 min-[375px]:px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28">
             
             {/* Mobile Header Structure */}
             <div className="md:hidden flex h-full flex-col gap-6 py-4">
@@ -547,7 +564,7 @@ export default function App() {
               </div>
 
               <div>
-                <h1 className="text-foreground font-black uppercase leading-[0.9] tracking-tighter text-5xl sm:text-6xl">
+                <h1 className="text-foreground font-black uppercase leading-[0.9] tracking-[-0.05em] text-[clamp(2.6rem,11vw,4.6rem)]">
                   Fullstack<br/>Developer
                 </h1>
               </div>
@@ -576,7 +593,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="text-right text-[3.2rem] font-black uppercase leading-[0.88] tracking-tighter text-foreground">
+              <div className="text-right text-[clamp(3.1rem,13vw,5.2rem)] font-black uppercase leading-[0.88] tracking-[-0.06em] text-foreground">
                 Mohamed<br/>Amine Amir
               </div>
 
@@ -592,7 +609,7 @@ export default function App() {
             <div className="hidden md:flex flex-col gap-10 lg:gap-14">
               <div className="grid grid-cols-12 items-start gap-x-6">
                 <div className="col-span-7">
-                  <h1 className="text-foreground font-black uppercase leading-[0.88] tracking-tighter text-7xl lg:text-8xl xl:text-9xl">
+                  <h1 className="text-foreground font-black uppercase leading-[0.88] tracking-[-0.04em] text-[clamp(2.8rem,6.6vw,6.6rem)]">
                     Fullstack<br/>Developer
                   </h1>
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -652,7 +669,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="text-right font-black uppercase leading-[0.88] tracking-tighter text-6xl lg:text-7xl">
+                  <div className="text-right font-black uppercase leading-[0.88] tracking-[-0.05em] text-[clamp(3.4rem,6.7vw,6.4rem)] text-foreground">
                     Mohamed<br/>Amine Amir
                   </div>
 
@@ -671,7 +688,7 @@ export default function App() {
         </section>
 
         {/* SCROLL-LINKED TEXT RIBBON */}
-        <section className="relative overflow-hidden border-y border-border/75 bg-background py-16 sm:py-24 select-none flex flex-col gap-6 sm:gap-10">
+        <section className="relative overflow-hidden border-y border-border/75 bg-background py-24 sm:py-32 lg:py-40 select-none flex flex-col gap-10 lg:gap-14">
           {/* Row 1: Fullstack dev & Devops */}
           <div className="whitespace-nowrap flex overflow-hidden">
             <div 
@@ -704,11 +721,10 @@ export default function App() {
           </div>
         </section>
 
-        {/* ABOUT SECTION with technical skills layout grids */}
-        <section id="about" className="relative overflow-hidden bg-background py-12 text-foreground sm:py-16 md:py-20 lg:py-24 xl:py-28">
+        <section id="about" className="relative overflow-hidden bg-background py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32">
           <ScrollSection>
-            <div className="w-full min-w-0 max-w-[min(100%,1920px)] mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
-              <div className="flex min-w-0 flex-col lg:flex-row lg:justify-between lg:items-start gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-20 2xl:gap-24">
+            <div className="w-full min-w-0 max-w-[min(100%,1920px)] mx-auto px-3 min-[375px]:px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28">
+              <div className="flex min-w-0 flex-col lg:flex-row lg:justify-between lg:items-start gap-16 md:gap-24 lg:gap-32 xl:gap-40">
                 
                 {/* Profile Bio Details */}
                 <div className="stats-panel-left w-full min-w-0 max-w-full lg:w-[42%] lg:max-w-none xl:w-5/12 space-y-4 sm:space-y-5 md:space-y-6">
@@ -735,8 +751,8 @@ export default function App() {
                 </div>
 
                 {/* Skills and Stack Panels Grid */}
-                <div className="stats-panel-right w-full min-w-0 max-w-full lg:w-[58%] lg:max-w-none xl:w-7/12 lg:self-center">
-                  <div className="grid gap-6 sm:gap-8 md:gap-10 lg:gap-12">
+                <div className="stats-panel-right w-full min-w-0 max-w-full lg:w-[58%] lg:max-w-none xl:w-7/12">
+                  <div className="grid gap-12 sm:gap-16 md:gap-20 lg:gap-24">
                     {techStacksData.map((group) => (
                       <div
                         key={group.label}
@@ -778,10 +794,9 @@ export default function App() {
           </ScrollSection>
         </section>
 
-        {/* PROJECTS SECTION: The Spectacular Interactive Replicated Slideshow */}
-        <section id="projects" className="scroll-mt-20 border-t border-border bg-background py-16 sm:py-24">
+        <section id="projects" className="scroll-mt-20 border-t border-border bg-background py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32">
           <ScrollSection>
-            <div className="mx-auto w-full max-w-[1920px] px-6 sm:px-10 md:px-16 lg:px-24">
+            <div className="mx-auto w-full max-w-[1920px] px-3 min-[375px]:px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28">
             
             {/* Mobile Layout (Simple elegant vertical stack) */}
             <div className="lg:hidden space-y-12">
@@ -836,10 +851,10 @@ export default function App() {
             </div>
 
             {/* Desktop Spectacular Split Screen Layout */}
-            <div className="hidden lg:flex lg:flex-row lg:items-start lg:gap-14">
+            <div className="hidden lg:flex lg:flex-row lg:items-start lg:gap-20 xl:gap-28">
               
               {/* Left Column: Project Selector List */}
-              <div className="flex w-full shrink-0 flex-col lg:w-[320px] xl:w-[360px] space-y-6">
+              <div className="flex w-full shrink-0 flex-col lg:w-[320px] xl:w-[360px] space-y-8">
                 <div>
                   <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.35em] text-primary font-bold">Selected Projects</span>
                   <h2 className="text-4xl font-black uppercase leading-[0.95] tracking-tighter text-foreground xl:text-5xl">Featured<br/>Work</h2>
@@ -849,12 +864,12 @@ export default function App() {
                 </div>
 
                 {/* Thumb Button items */}
-                <div className="flex flex-col gap-3 pt-4">
+                <div className="flex flex-col gap-4 pt-6">
                   {projects.map((proj, idx) => (
                     <button 
                       key={proj.id}
                       onClick={() => setActiveProject(idx)}
-                      className={`group flex items-center gap-4 rounded-lg border p-3 text-left outline-none transition-all duration-300 ${activeProject === idx ? 'border-primary bg-primary/5 shadow-sm' : 'border-border bg-card/40 hover:border-foreground/20 hover:bg-card'}`}
+                      className={`group flex items-center gap-5 rounded-lg border p-4 text-left outline-none transition-all duration-300 ${activeProject === idx ? 'border-primary bg-primary/5 shadow-sm' : 'border-border bg-card/40 hover:border-foreground/20 hover:bg-card'}`}
                     >
                       {/* Image Thumbnail Preview */}
                       <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-md border border-border bg-muted">
@@ -892,8 +907,8 @@ export default function App() {
               </div>
 
               {/* Right Column: Giant Interactive Slider Canvas Panel with Crossfading */}
-              <div className="min-h-0 flex-1 lg:pl-4">
-                <div className="relative flex w-full flex-col overflow-hidden rounded-xl border border-border/90 bg-card p-4 h-[650px] xl:h-[720px] shadow-lg group">
+              <div className="min-h-0 flex-1 lg:pl-6">
+                <div className="relative flex w-full flex-col overflow-hidden rounded-xl border border-border/90 bg-card p-6 h-[650px] xl:h-[720px] shadow-lg group">
                   
                   {/* Cybernetic HUD Frame elements */}
                   <span className="pointer-events-none absolute left-4 top-4 z-20 h-4 w-4 border-l-2 border-t-2 border-primary/45 opacity-60 group-hover:opacity-100 transition-opacity"></span>
@@ -930,7 +945,7 @@ export default function App() {
                             <p className="mt-2 text-xs text-muted-foreground leading-relaxed font-light">{proj.desc}</p>
                             
                             {/* Detailed Challenge & Solution block */}
-                            <div className="mt-4 border-t border-border/30 pt-3 grid grid-cols-2 gap-4 text-xs font-mono">
+                            <div className="mt-8 border-t border-border/30 pt-6 grid grid-cols-2 gap-6 text-xs font-mono">
                               <div>
                                 <span className="text-primary font-bold uppercase tracking-wider text-[10px] block mb-1">Challenge</span>
                                 <span className="text-foreground/80 leading-relaxed text-[11px] font-sans block">{proj.challenge}</span>
@@ -989,12 +1004,11 @@ export default function App() {
         </ScrollSection>
       </section>
 
-        {/* RECONSTRUCTED HIGH-FIDELITY SPLIT CONTACT SECTION */}
-        <section id="contact" className="relative border-t border-border bg-[#f4f3ef]/35 dark:bg-background/25 py-20 sm:py-28 md:py-32 scroll-mt-20">
+        <section id="contact" className="relative border-t border-border bg-[#f4f3ef]/35 dark:bg-background/25 py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 scroll-mt-20">
           <ScrollSection>
-            <div className="mx-auto w-full max-w-[1920px] px-6 sm:px-10 md:px-16 lg:px-24">
+            <div className="mx-auto w-full max-w-[1920px] px-3 min-[375px]:px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28">
               
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 xl:gap-32 items-start">
                 
                 {/* Left Column */}
                 <div className="lg:col-span-5 space-y-8">
@@ -1038,7 +1052,7 @@ export default function App() {
                       aria-label="Twitter/X" 
                       className="group flex items-center justify-center w-11 h-11 rounded-full border border-border/60 hover:border-foreground/45 bg-transparent text-foreground/55 hover:text-foreground transition-all duration-300"
                     >
-                      <XIcon className="w-4.5 h-4.5 group-hover:scale-105 transition-transform" />
+                      <XIcon className="w-5 h-5 group-hover:scale-105 transition-transform" />
                     </a>
                   </div>
                 </div>
@@ -1053,7 +1067,7 @@ export default function App() {
                       aria-label="Email" 
                       className="group inline-flex items-center justify-center w-10 h-10 rounded-full border border-border/40 hover:border-foreground/40 bg-transparent text-muted-foreground/60 hover:text-foreground transition-all duration-300"
                     >
-                      <ArrowUpRight className="h-4.5 w-4.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      <ArrowUpRight className="h-5 w-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </a>
                   </div>
 
@@ -1094,9 +1108,8 @@ export default function App() {
 
       </main>
 
-      {/* FOOTER SECTION */}
       <footer className="border-t border-border bg-card py-10">
-        <div className="mx-auto w-full max-w-[1920px] px-6 sm:px-10 md:px-16 lg:px-24 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div className="mx-auto w-full max-w-[1920px] px-3 min-[375px]:px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
             &copy; 2026 Mohamed Amine Amir. Built with React &amp; Tailwind.
           </div>
@@ -1112,6 +1125,79 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Chat Assistant Overlay / Drawer matching Roman Caseres' style but highly interactive */}
+      <div className={`fixed bottom-6 right-6 sm:right-10 z-50 w-[min(calc(100vw-2rem),380px)] bg-card border border-border rounded-xl shadow-2xl transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        chatOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
+      }`}>
+        {/* Chat Header */}
+        <div className="flex items-center justify-between border-b border-border/40 px-4 py-3.5 bg-background/45 rounded-t-xl">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-foreground font-bold">Amir Assistant</span>
+          </div>
+          <button 
+            onClick={() => setChatOpen(false)}
+            className="text-muted-foreground hover:text-foreground transition-colors p-1"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        {/* Chat Messages Log */}
+        <div className="p-4 h-[220px] overflow-y-auto flex flex-col gap-3 scrollbar-none font-sans text-xs">
+          {chatMessages.map((msg, i) => (
+            <div 
+              key={i} 
+              className={`max-w-[85%] rounded-lg px-3 py-2 leading-relaxed ${
+                msg.sender === 'bot' 
+                  ? 'bg-muted/70 text-foreground/90 mr-auto' 
+                  : 'bg-primary text-primary-foreground ml-auto'
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+
+        {/* Rapid choices / footer */}
+        <div className="border-t border-border/40 p-3 bg-background/25 rounded-b-xl flex flex-col gap-2">
+          <div className="text-[8px] font-mono uppercase tracking-widest text-muted-foreground/80 mb-1 px-1">Select a response:</div>
+          <div className="flex flex-col gap-1.5">
+            <button 
+              onClick={() => handleChatChoice("💼 Hire me for a project")}
+              className="text-left w-full text-[10px] font-mono uppercase tracking-wider py-1.5 px-2.5 rounded-md border border-border/75 bg-card hover:bg-muted hover:border-foreground/35 transition-all text-foreground/80 cursor-pointer"
+            >
+              💼 Hire me for a project
+            </button>
+            <button 
+              onClick={() => handleChatChoice("⚡ Check out my skills")}
+              className="text-left w-full text-[10px] font-mono uppercase tracking-wider py-1.5 px-2.5 rounded-md border border-border/75 bg-card hover:bg-muted hover:border-foreground/35 transition-all text-foreground/80 cursor-pointer"
+            >
+              ⚡ Check out my skills
+            </button>
+            <button 
+              onClick={() => handleChatChoice("👋 Just saying hello!")}
+              className="text-left w-full text-[10px] font-mono uppercase tracking-wider py-1.5 px-2.5 rounded-md border border-border/75 bg-card hover:bg-muted hover:border-foreground/35 transition-all text-foreground/80 cursor-pointer"
+            >
+              👋 Just saying hello!
+            </button>
+          </div>
+          
+          <div className="mt-2 border-t border-border/20 pt-2 flex items-center justify-between px-1">
+            <button 
+              onClick={handleCopyEmail}
+              className="font-mono text-[8px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            >
+              {copied ? "COPIED!" : "COPY EMAIL"}
+            </button>
+            <span className="font-mono text-[7px] text-muted-foreground/60">ONLINE</span>
+          </div>
+        </div>
+      </div>
 
     </div>
   );
