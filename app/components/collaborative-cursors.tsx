@@ -25,7 +25,7 @@ type LenisLike = {
     off: (event: string, callback: () => void) => void;
 };
 
-type WindowWithLenis = Window & { lenis?: LenisLike };
+type WindowWithLenis = Omit<Window, "lenis"> & { lenis?: LenisLike };
 
 type CursorPayload = {
     oid: string;
@@ -47,7 +47,7 @@ function getDocumentSize(): { dw: number; dh: number } {
 }
 
 function getDocumentScroll(): { sx: number; sy: number } {
-    const w = window as WindowWithLenis;
+    const w = (window as unknown) as WindowWithLenis;
     const lenis = w.lenis;
     if (lenis && typeof lenis.scroll === "number") {
         return lenis.isHorizontal
@@ -235,7 +235,7 @@ export default function CollaborativeCursors() {
         window.addEventListener("scroll", bump, { passive: true, capture: true });
         window.addEventListener("resize", bump);
 
-        const win = window as WindowWithLenis;
+        const win = (window as unknown) as WindowWithLenis;
         const lenis = win.lenis;
         if (lenis) {
             lenis.on("scroll", bump);

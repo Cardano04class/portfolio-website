@@ -13,10 +13,10 @@ if (typeof window !== "undefined") {
 
 type LenisInstance = InstanceType<typeof Lenis>;
 
-type WindowWithLenis = Window & { lenis?: LenisInstance };
+type WindowWithLenis = Omit<Window, "lenis"> & { lenis?: LenisInstance };
 
 function getWindowWithLenis(): WindowWithLenis {
-  return window as WindowWithLenis;
+  return (window as unknown) as WindowWithLenis;
 }
 
 /**
@@ -100,7 +100,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       if (rafId !== null) window.cancelAnimationFrame(rafId);
       window.removeEventListener("resize", handleResize);
       lenis.destroy();
-      delete getWindowWithLenis().lenis;
+      getWindowWithLenis().lenis = undefined;
       document.documentElement.style.overflowY = "";
       document.body.style.overflowY = "";
       ScrollTrigger.refresh();
