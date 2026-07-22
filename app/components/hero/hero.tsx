@@ -64,7 +64,7 @@ export default function Hero() {
                         </div>
                         <HeroInteractivePortrait frameClassName="w-full aspect-video">
                             <Image
-                                src="/heropic.svg"
+                                src="/images/portrait.png"
                                 alt="Portrait"
                                 width={1200}
                                 height={675}
@@ -211,7 +211,7 @@ export default function Hero() {
                                 <div className="w-full max-w-[720px]">
                                     <HeroInteractivePortrait frameClassName="w-full aspect-16/6">
                                         <Image
-                                            src="/heropic.svg"
+                                            src="/images/portrait.png"
                                             alt="Portrait"
                                             width={1600}
                                             height={600}
