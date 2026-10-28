@@ -82,7 +82,7 @@ export default function ProjectDescriptionPage({
                                 </Link>
                             </div>
                             <a
-                                href={project.image}
+                                href={project.image.src}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="rounded-full border border-white/35 bg-black/20 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition-colors hover:border-white/55 hover:bg-black/35 sm:text-[10px]"
@@ -183,6 +183,38 @@ export default function ProjectDescriptionPage({
                                 </ul>
                             </div>
                         </div>
+
+                        {project.screenshots?.length ? (
+                            <div className="mt-16 border-t border-border pt-14 sm:mt-20 sm:pt-16 md:mt-24 md:pt-20">
+                                <h2 className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground sm:text-[11px]">
+                                    Screenshots
+                                </h2>
+                                <ul className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-x-8 md:gap-y-12">
+                                    {project.screenshots.map((shot) => (
+                                        <li key={shot.image.src}>
+                                            <figure>
+                                                <a
+                                                    href={shot.image.src}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="block overflow-hidden rounded-sm border border-border bg-muted"
+                                                >
+                                                    <Image
+                                                        src={shot.image}
+                                                        alt={shot.caption}
+                                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                                        className="h-auto w-full"
+                                                    />
+                                                </a>
+                                                <figcaption className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[11px]">
+                                                    {shot.caption}
+                                                </figcaption>
+                                            </figure>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : null}
                     </div>
                 </section>
             </ProjectPageEnter>

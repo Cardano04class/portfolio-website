@@ -5,5 +5,8 @@
     "deploymentEnabled": {
       "main": false
     }
-  }
+  },
+  "redirects": [
+    { "source": "/projects/ft_transcendence", "destination": "/projects/clubshub", "permanent": true }
+  ]
 }

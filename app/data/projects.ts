@@ -1,3 +1,17 @@
+import type { StaticImageData } from "next/image";
+import clubshubLanding from "@/src/projects/clubshub/landing.webp";
+import clubshubDashboard from "@/src/projects/clubshub/dashboard.webp";
+import clubshubUpcoming from "@/src/projects/clubshub/upcoming-events.webp";
+import clubshubCalendar from "@/src/projects/clubshub/event-calendar.webp";
+import clubshubEvents from "@/src/projects/clubshub/events-management.webp";
+import clubshubUsers from "@/src/projects/clubshub/user-management.webp";
+import clubshubClubs from "@/src/projects/clubshub/club-selection.webp";
+import inceptionCover from "@/src/projects/inception/cover.webp";
+import minishellCover from "@/src/projects/minishell/cover.webp";
+import pushSwapCover from "@/src/projects/push_swap/cover.webp";
+
+export type ProjectScreenshot = { image: StaticImageData; caption: string };
+
 export type Project = {
     slug: string;
     title: string;
@@ -8,27 +22,39 @@ export type Project = {
     github: string;
     featured: boolean;
     year: string;
-    image: string;
+    image: StaticImageData;
+    /** Shown as a gallery on the detail page, after the description. */
+    screenshots?: readonly ProjectScreenshot[];
 };
 
 export const projects: readonly Project[] = [
     {
-        slug: "ft_transcendence",
-        title: "ft_transcendence: ClubsHub",
+        slug: "clubshub",
+        title: "ClubsHub",
         description:
-            "ClubsHub is a web platform for 1337 School's student clubs, built by a team of five. Students browse and join clubs, run events, chat in real time, and ask an AI assistant about the platform.\n\nI was responsible for continuous integration and testing, on the DevOps side of the team.",
-        role: "DevOps, continuous integration & testing (team of 5)",
+            "ClubsHub is a platform for 1337 clubs to manage their activities and share events with students. It makes it easier for students to discover events, stay informed, and get involved with different clubs.\n\nVisitors can browse events, upcoming activities and the event calendar, and ask the chatbot questions. Club presidents manage their club's members, events and details. Club members handle tasks according to the role and permissions they are given. 1337 staff manage clubs, events and users across the whole platform.\n\nI worked as DevOps engineer and on continuous testing in a team of five. I also built the 42 Intra OAuth sign-in, the sign-up, sign-in and logout flow, and the Arabic, English and French translations of the app.",
+        role: "DevOps Engineer & Continuous Testing (team of 5)",
         highlights: [
-            "Real-time club chat with Socket.IO, and a per-club role and permission system.",
-            "Sign-in with 42 Intra OAuth, two-factor auth, and JWT in HttpOnly cookies; Redis handles token blacklisting and rate limiting.",
-            "AI assistant using retrieval (Groq LLM, Voyage AI embeddings, ChromaDB), plus AI moderation of event content.",
-            "The whole stack runs in Docker Compose behind an NGINX reverse proxy with TLS.",
+            "Available in Arabic, English and French, with light and dark mode.",
+            "Role and permission management for club members.",
+            "Internal chat for club members, and an event calendar for upcoming activities.",
+            "Students can join and take part in several clubs at once.",
+            "Sign-in with 42 Intra OAuth and two-factor authentication.",
+            "Runs in Docker Compose behind an NGINX reverse proxy with TLS.",
         ],
         tech: ["TypeScript", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "Redis", "Docker", "NGINX"],
         github: "https://github.com/Cardano04class/ft_transcendence",
         featured: true,
         year: "2026",
-        image: "/images/projects/transcendence.png",
+        image: clubshubLanding,
+        screenshots: [
+            { image: clubshubDashboard, caption: "Staff dashboard: events and clubs across all 1337 campuses" },
+            { image: clubshubUpcoming, caption: "Upcoming events, open to visitors" },
+            { image: clubshubCalendar, caption: "Event calendar" },
+            { image: clubshubEvents, caption: "Events management" },
+            { image: clubshubUsers, caption: "Users management and club president roles" },
+            { image: clubshubClubs, caption: "Club selection for members of several clubs" },
+        ],
     },
     {
         slug: "inception",
@@ -46,7 +72,7 @@ export const projects: readonly Project[] = [
         github: "https://github.com/Cardano04class/Inception",
         featured: true,
         year: "2025",
-        image: "/images/projects/inception.png",
+        image: inceptionCover,
     },
     {
         slug: "minishell",
@@ -64,7 +90,7 @@ export const projects: readonly Project[] = [
         github: "https://github.com/Cardano04class/minishell",
         featured: true,
         year: "2024",
-        image: "/images/projects/minishell.png",
+        image: minishellCover,
     },
     {
         slug: "push_swap",
@@ -82,7 +108,7 @@ export const projects: readonly Project[] = [
         github: "https://github.com/Cardano04class/Push_swap",
         featured: false,
         year: "2024",
-        image: "/images/projects/push_swap.png",
+        image: pushSwapCover,
     },
 ];
 

@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     return {
         title,
         description,
-        openGraph: { title, description, images: project.image },
-        twitter: { card: "summary_large_image", title, description, images: [project.image] },
+        openGraph: { title, description, images: project.image.src },
+        twitter: { card: "summary_large_image", title, description, images: [project.image.src] },
     };
 }
 
