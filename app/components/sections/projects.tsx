@@ -450,7 +450,7 @@ export default function Projects() {
                                             aria-hidden
                                         >
                                             <img
-                                                src={project.image}
+                                                src={project.image.src}
                                                 alt=""
                                                 width={160}
                                                 height={90}

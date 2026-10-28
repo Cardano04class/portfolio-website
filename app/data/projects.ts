@@ -1,3 +1,17 @@
+import type { StaticImageData } from "next/image";
+import clubshubLanding from "@/src/projects/clubshub/landing.webp";
+import clubshubDashboard from "@/src/projects/clubshub/dashboard.webp";
+import clubshubUpcoming from "@/src/projects/clubshub/upcoming-events.webp";
+import clubshubCalendar from "@/src/projects/clubshub/event-calendar.webp";
+import clubshubEvents from "@/src/projects/clubshub/events-management.webp";
+import clubshubUsers from "@/src/projects/clubshub/user-management.webp";
+import clubshubClubs from "@/src/projects/clubshub/club-selection.webp";
+import inceptionCover from "@/src/projects/inception/cover.webp";
+import minishellCover from "@/src/projects/minishell/cover.webp";
+import pushSwapCover from "@/src/projects/push_swap/cover.webp";
+
+export type ProjectScreenshot = { image: StaticImageData; caption: string };
+
 export type Project = {
     slug: string;
     title: string;
@@ -8,78 +22,94 @@ export type Project = {
     github: string;
     featured: boolean;
     year: string;
-    image: string;
+    image: StaticImageData;
+    /** Shown as a gallery on the detail page, after the description. */
+    screenshots?: readonly ProjectScreenshot[];
 };
 
 export const projects: readonly Project[] = [
     {
-        slug: "ft_transcendence",
-        title: "ft_transcendence: ClubsHub Ecosystem Platform",
+        slug: "clubshub",
+        title: "ClubsHub",
         description:
-            "ClubsHub is a full-stack web platform built for 1337 School's club ecosystem. It enables students to discover clubs, manage events, communicate in real time via Socket.io, and interact with an AI-assisted RAG chatbot for instant platform information.",
-        role: "DevOps Engineer & Continuous Testing",
+            "ClubsHub is a platform for 1337 clubs to manage their activities and share events with students. It makes it easier for students to discover events, stay informed, and get involved with different clubs.\n\nVisitors can browse events, upcoming activities and the event calendar, and ask the chatbot questions. Club presidents manage their club's members, events and details. Club members handle tasks according to the role and permissions they are given. 1337 staff manage clubs, events and users across the whole platform.\n\nI worked as DevOps engineer and on continuous testing in a team of five. I also built the 42 Intra OAuth sign-in, the sign-up, sign-in and logout flow, and the Arabic, English and French translations of the app.",
+        role: "DevOps Engineer & Continuous Testing (team of 5)",
         highlights: [
-            "Engineered full-stack 1337 School club ecosystem with real-time Socket.io communication channels.",
-            "Integrated AI-powered RAG chatbot & event content moderation pipelines for automated community support.",
-            "Configured robust multi-container Docker & Nginx infrastructure with 42 OAuth, 2FA, and Redis rate-limiting."
+            "Available in Arabic, English and French, with light and dark mode.",
+            "Role and permission management for club members.",
+            "Internal chat for club members, and an event calendar for upcoming activities.",
+            "Students can join and take part in several clubs at once.",
+            "Sign-in with 42 Intra OAuth and two-factor authentication.",
+            "Runs in Docker Compose behind an NGINX reverse proxy with TLS.",
         ],
-        tech: ["React", "Node.js", "TypeScript", "Socket.io", "MongoDB", "Redis", "Docker", "AI / RAG"],
+        tech: ["TypeScript", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "Redis", "Docker", "NGINX"],
         github: "https://github.com/Cardano04class/ft_transcendence",
         featured: true,
-        year: "2025",
-        image: "/images/projects/transcendence.png"
+        year: "2026",
+        image: clubshubLanding,
+        screenshots: [
+            { image: clubshubDashboard, caption: "Staff dashboard: events and clubs across all 1337 campuses" },
+            { image: clubshubUpcoming, caption: "Upcoming events, open to visitors" },
+            { image: clubshubCalendar, caption: "Event calendar" },
+            { image: clubshubEvents, caption: "Events management" },
+            { image: clubshubUsers, caption: "Users management and club president roles" },
+            { image: clubshubClubs, caption: "Club selection for members of several clubs" },
+        ],
     },
     {
         slug: "inception",
-        title: "Inception: System Infrastructure Virtualizer",
+        title: "Inception: Docker web infrastructure",
         description:
-            "A secure, multi-container virtualized web server infrastructure built inside Alpine Linux environments using Docker Compose pipelines.",
-        role: "System Architect",
+            "A WordPress site served from three containers I built from scratch with my own Dockerfiles, no prebuilt images: NGINX, WordPress with PHP-FPM, and MariaDB.\n\nDocker Compose wires them together on a private bridge network, and the site's data persists on the host between restarts.",
+        role: "Solo project",
         highlights: [
-            "Constructed fully sandboxed, modular container environments via Docker Compose structures.",
-            "Configured isolated custom system network layers, dynamic volume storage, and root SSL layers.",
-            "Orchestrated secure multi-service configurations running WordPress, Nginx, and databases."
+            "Each service has its own Dockerfile, based on Debian Bullseye.",
+            "NGINX is the only entry point and accepts HTTPS only.",
+            "Containers reach each other by name on a dedicated Docker bridge network.",
+            "Database and site files persist through bind mounts; configuration comes from environment variables.",
         ],
-        tech: ["Docker", "Alpine Linux", "Nginx", "TLS", "System Architecture"],
-        github: "https://github.com/Cardano04class",
+        tech: ["Docker", "Docker Compose", "NGINX", "WordPress", "PHP-FPM", "MariaDB", "TLS"],
+        github: "https://github.com/Cardano04class/Inception",
         featured: true,
         year: "2025",
-        image: "/images/projects/inception.png"
+        image: inceptionCover,
     },
     {
         slug: "minishell",
-        title: "minishell: Custom Command-Line Interpreter",
+        title: "minishell: a Unix shell in C",
         description:
-            "A feature-complete POSIX-compliant Unix command-line shell built in C, managing pipeline forks, file descriptor trees, and redirections.",
-        role: "Systems Developer",
+            "A small bash-like shell written in C with a teammate. It reads a command line, splits it into tokens, parses it, and runs it: pipes, redirections, heredocs, environment variables and the usual builtins.\n\nThe project is mostly about processes and file descriptors: forking, wiring pipes between commands, and cleaning up afterwards.",
+        role: "Pair project",
         highlights: [
-            "Engineered a Unix shell execution loop complete with parsing trees and syntax validation.",
-            "Managed strict pipe connections, process redirections, file descriptor trees, and signals.",
-            "Implemented core POSIX shell builtins with absolute zero memory allocation leaks."
+            "A state-machine lexer that handles single and double quotes and special characters.",
+            "Syntax checking, variable expansion, quote removal, and heredocs.",
+            "Pipelines run with fork, pipe and dup2, with output and input redirections.",
+            "Builtins: cd, echo, env, exit, export and unset.",
         ],
-        tech: ["C", "POSIX", "Unix Systems", "Processes"],
-        github: "https://github.com/Cardano04class",
+        tech: ["C", "Unix processes", "Pipes", "File descriptors", "Signals"],
+        github: "https://github.com/Cardano04class/minishell",
         featured: true,
         year: "2024",
-        image: "/images/projects/minishell.png"
+        image: minishellCover,
     },
     {
         slug: "push_swap",
-        title: "push_swap: Complexity Sort Optimizer",
+        title: "push_swap: sorting with two stacks",
         description:
-            "A highly optimized, mechanical Big-O stack sorting algorithm designed to minimize execution cost parameters via Pivot Partitions.",
-        role: "Algorithms Developer",
+            "Sort a list of integers using two stacks and a small set of moves (swap, push, rotate, reverse rotate), in as few moves as possible.\n\nMy solution picks, at each step, the number that is cheapest to move into its place in the other stack.",
+        role: "Solo project",
         highlights: [
-            "Designed mechanical sort cost weighing algorithms optimizing double stack arrays.",
-            "Minimized assembly list operations to theoretical limits under strict Big-O constraints.",
-            "Engineered efficient pivot chunk partition calculations for maximum performance scaling."
+            "For every number, computes how many rotations it costs to bring it and its target position to the top.",
+            "Rotates both stacks together when they go the same direction, to save moves.",
+            "Handles small inputs with a dedicated sort for three numbers.",
+            "Validates input and rejects duplicates and values outside the int range.",
         ],
-        tech: ["C", "Algorithms", "Big-O Optimization", "Complexity"],
-        github: "https://github.com/Cardano04class",
+        tech: ["C", "Algorithms", "Linked lists"],
+        github: "https://github.com/Cardano04class/Push_swap",
         featured: false,
         year: "2024",
-        image: "/images/projects/push_swap.png"
-    }
+        image: pushSwapCover,
+    },
 ];
 
 /** Tag line like `[REACT] — [NODE.JS] — [TYPESCRIPT]`; falls back to the year. */
