@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import type { Project } from "@/app/data/projects";
 import ProjectPageEnter from "@/app/components/project-page-enter";
 import ProjectDemo from "@/app/components/demos/project-demo";
@@ -21,7 +21,7 @@ function splitDescription(description: string): { lead: string; rest: string } {
     return { lead: "Project overview", rest: trimmed };
 }
 
-function MetaRow({ label, value }: { label: string; value: string }): ReactElement {
+function MetaRow({ label, value }: { label: string; value: ReactNode }): ReactElement {
     return (
         <div className="border-b border-border py-4 first:pt-0 sm:py-5">
             <dt className="font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground sm:text-[10px]">
@@ -128,6 +128,24 @@ export default function ProjectDescriptionPage({
                                 <dl className="mt-10 sm:mt-12">
                                     <MetaRow label="Year" value={project.year} />
                                     <MetaRow label="Role" value={project.role} />
+                                    {project.team?.length ? (
+                                        <MetaRow
+                                            label="With"
+                                            value={project.team.map((login, i) => (
+                                                <span key={login}>
+                                                    {i > 0 ? ", " : null}
+                                                    <a
+                                                        href={`https://github.com/${login}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground"
+                                                    >
+                                                        @{login}
+                                                    </a>
+                                                </span>
+                                            ))}
+                                        />
+                                    ) : null}
                                     <MetaRow label="Tech stack" value={techLine || "—"} />
                                     <MetaRow
                                         label="Status"

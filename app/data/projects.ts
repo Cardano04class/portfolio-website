@@ -53,6 +53,7 @@ export const projects: readonly Project[] = [
         ],
         tech: ["TypeScript", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "Redis", "Docker", "NGINX"],
         github: "https://github.com/Cardano04class/ft_transcendence",
+        team: ["issam22-laafer", "chikhidev", "MohamedKartit", "mofassa1"],
         featured: true,
         year: "2026",
         image: clubshubLanding,
@@ -88,7 +89,7 @@ export const projects: readonly Project[] = [
         slug: "minishell",
         title: "minishell: a Unix shell in C",
         description:
-            "A small bash-like shell written in C with a teammate. It reads a command line, splits it into tokens, parses it, and runs it: pipes, redirections, heredocs, environment variables and the usual builtins.\n\nThe project is mostly about processes and file descriptors: forking, wiring pipes between commands, and cleaning up afterwards.",
+            "A small bash-like shell written in C with mobouifr. It reads a command line, splits it into tokens, parses it, and runs it: pipes, redirections, heredocs, environment variables and the usual builtins.\n\nThe project is mostly about processes and file descriptors: forking, wiring pipes between commands, and cleaning up afterwards.",
         role: "Pair project",
         highlights: [
             "A state-machine lexer that handles single and double quotes and special characters.",
@@ -98,6 +99,7 @@ export const projects: readonly Project[] = [
         ],
         tech: ["C", "Unix processes", "Pipes", "File descriptors", "Signals"],
         github: "https://github.com/Cardano04class/minishell",
+        team: ["mobouifr"],
         demo: "minishell",
         featured: true,
         year: "2024",
