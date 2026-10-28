@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion, domAnimation } from "motion/react";
 import {
     HeroAvailability,
     HeroBackdrop,
@@ -65,7 +65,7 @@ export default function Hero() {
                         <HeroInteractivePortrait frameClassName="w-full aspect-video">
                             <Image
                                 src="/images/profil2.jpeg"
-                                alt="Portrait"
+                                alt="Portrait of Mohamed Amine"
                                 width={1200}
                                 height={675}
                                 sizes="100vw"
@@ -212,7 +212,7 @@ export default function Hero() {
                                     <HeroInteractivePortrait frameClassName="w-full aspect-16/6">
                                         <Image
                                             src="/images/profil2.jpeg"
-                                            alt="Portrait"
+                                            alt="Portrait of Mohamed Amine"
                                             width={1600}
                                             height={600}
                                             sizes="(max-width: 768px) 100vw, 640px"

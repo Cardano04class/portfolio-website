@@ -19,6 +19,7 @@ export default function ScrollSection({ children }: ScrollSectionProps) {
 
     useGSAP(() => {
         if (!containerRef.current || !contentRef.current) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
         // One-shot reveal (no scrub): two fewer ScrollTriggers per section vs enter+exit scrub.
         gsap.fromTo(

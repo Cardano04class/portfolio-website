@@ -3,6 +3,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "./data/site";
 import AppNavbar from "./components/navbar/app-navbar";
 import SmoothScroll from "./components/smooth-scroll";
 import PageTransition from "./components/page-transition";
@@ -19,26 +20,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const title = "Mohamed Amine | Fullstack Developer";
+const description =
+  "Mohamed Amine is a software developer with a passion for building high-performance web applications and system solutions.";
+const previewImage = { url: "/images/preview.png", width: 1024, height: 588 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: "Mohamed Amine | Fullstack Developer",
-  description: "Mohamed Amine is a software developer with a passion for building high-performance web applications and system solutions.",
+  metadataBase: new URL(SITE_URL),
+  title,
+  description,
   icons: {
     icon: "/favicon.svg",
   },
-  openGraph: {
-    title: "Mohamed Amine | Fullstack Developer",
-    description: "Mohamed Amine is a software developer with a passion for building high-performance web applications and system solutions.",
-    images: "/favicon.svg",
-  },
+  openGraph: { title, description, images: previewImage },
   twitter: {
     card: "summary_large_image",
-    title: "Mohamed Amine | Fullstack Developer",
-    description: "Mohamed Amine is a software developer with a passion for building high-performance web applications and system solutions.",
-    images: ["/favicon.svg"],
+    title,
+    description,
+    images: [previewImage],
   },
 };
 
