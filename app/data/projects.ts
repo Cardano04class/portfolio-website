@@ -11,7 +11,7 @@ import minishellCover from "@/src/projects/minishell/cover.webp";
 import pushSwapCover from "@/src/projects/push_swap/cover.webp";
 
 /** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
-export type DemoId = "push_swap";
+export type DemoId = "push_swap" | "minishell";
 
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
@@ -92,6 +92,7 @@ export const projects: readonly Project[] = [
         ],
         tech: ["C", "Unix processes", "Pipes", "File descriptors", "Signals"],
         github: "https://github.com/Cardano04class/minishell",
+        demo: "minishell",
         featured: true,
         year: "2024",
         image: minishellCover,
