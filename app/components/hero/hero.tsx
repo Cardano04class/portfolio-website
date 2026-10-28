@@ -64,14 +64,14 @@ export default function Hero() {
                         </div>
                         <HeroInteractivePortrait frameClassName="w-full aspect-video">
                             <Image
-                                src="/images/profil2.jpeg"
+                                src="/images/profile.jpg"
                                 alt="Portrait of Mohamed Amine"
                                 width={1200}
                                 height={675}
                                 sizes="100vw"
                                 priority
                                 fetchPriority="high"
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-cover object-[center_70%]"
                             />
                         </HeroInteractivePortrait>
                     </HeroEnterBlock>
@@ -211,14 +211,14 @@ export default function Hero() {
                                 <div className="w-full max-w-[720px]">
                                     <HeroInteractivePortrait frameClassName="w-full aspect-16/6">
                                         <Image
-                                            src="/images/profil2.jpeg"
+                                            src="/images/profile.jpg"
                                             alt="Portrait of Mohamed Amine"
                                             width={1600}
                                             height={600}
                                             sizes="(max-width: 768px) 100vw, 640px"
                                             priority
                                             fetchPriority="high"
-                                            className="h-full w-full object-cover"
+                                            className="h-full w-full object-cover object-[center_70%]"
                                         />
                                     </HeroInteractivePortrait>
 
