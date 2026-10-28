@@ -63,8 +63,9 @@
 
 ## 📬 Connect with Me
 - **Portfolio:** [https://m-amir.xyz/](https://m-amir.xyz/)
+- **Mail:** [cardano_class@proton.me](cardano_class@proton.me)
 - **GitHub:** [https://github.com/Cardano04class](https://github.com/Cardano04class)
 - **Location:** Casablanca, Morocco 🇲🇦
 
 ---
-*Design & Code by Mohamed Amine*
+*Code by Mohamed Amine*
