@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 const title = "Mohamed Amine | Fullstack Developer";
 const description =
   "Mohamed Amine is a software developer with a passion for building high-performance web applications and system solutions.";
-const previewImage = { url: "/images/preview.png", width: 1024, height: 588 };
+const previewImage = { url: "/images/preview.png", width: 1200, height: 630 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
