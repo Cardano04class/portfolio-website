@@ -59,9 +59,6 @@ export default function Hero() {
                     </HeroEnterBlock>
 
                     <HeroEnterBlock drift="center">
-                        <div className="text-[10px] font-mono uppercase tracking-[0.28em] text-foreground/70 mb-2">
-                            Dr &amp; Me
-                        </div>
                         <HeroInteractivePortrait frameClassName="w-full aspect-video">
                             <Image
                                 src="/images/profile.jpg"
@@ -86,7 +83,7 @@ export default function Hero() {
                             <div className="mt-2 text-[10px] font-mono uppercase tracking-[0.24em] text-foreground/55">
                                 Open for freelance / full-time
                                 <br />
-                                Based in Quezon City, PH
+                                Based in Casablanca, MA
                             </div>
                         </div>
                     </HeroEnterBlock>
