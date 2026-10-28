@@ -16,11 +16,14 @@ export function generateStaticParams(): Array<{ slug: string }> {
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
     const project = getProjectBySlug((await params).slug);
     if (!project) return {};
+    // Child openGraph/twitter objects replace the root ones wholesale, so repeat every field.
+    const title = `${project.title} | Mohamed Amine`;
+    const description = project.description;
     return {
-        title: `${project.title} | Mohamed Amine`,
-        description: project.description,
-        openGraph: { images: project.image },
-        twitter: { images: [project.image] },
+        title,
+        description,
+        openGraph: { title, description, images: project.image },
+        twitter: { card: "summary_large_image", title, description, images: [project.image] },
     };
 }
 

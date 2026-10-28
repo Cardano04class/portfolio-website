@@ -8,7 +8,7 @@ import { createPortal } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects, projectTagsLine, type Project } from "@/app/data/projects";
-import { useProjectNavigation } from "@/app/utils/project-detail-navigation";
+import { useProjectNavigation } from "@/app/hooks/use-project-navigation";
 import { useShootModeOn } from "@/app/utils/shoot-mode-store";
 
 if (typeof window !== "undefined") {

@@ -14,7 +14,9 @@ CREATE POLICY chat_messages_public_read ON public.chat_messages
 DROP POLICY IF EXISTS chat_messages_public_insert ON public.chat_messages;
 CREATE POLICY chat_messages_public_insert ON public.chat_messages
   FOR INSERT TO anon, authenticated
-  WITH CHECK (true);
+  -- Assumes created_at DEFAULT now() (the client never sends it).
+  -- Client must not backdate or future-date rows, or the 10-minute purge never removes them.
+  WITH CHECK (created_at BETWEEN now() - interval '1 minute' AND now() + interval '1 minute');
 
 -- No UPDATE / DELETE policies: with RLS on, those are denied for anon and authenticated.
 
@@ -26,8 +28,8 @@ ALTER TABLE public.chat_messages DROP CONSTRAINT IF EXISTS chat_messages_usernam
 ALTER TABLE public.chat_messages ADD CONSTRAINT chat_messages_username_length
   CHECK (char_length(btrim(username)) BETWEEN 1 AND 24) NOT VALID;
 
-ALTER TABLE public.chat_messages DROP CONSTRAINT IF EXISTS chat_messages_country_code_format;
-ALTER TABLE public.chat_messages ADD CONSTRAINT chat_messages_country_code_format
+ALTER TABLE public.chat_messages DROP CONSTRAINT IF EXISTS chat_messages_cc_format;
+ALTER TABLE public.chat_messages ADD CONSTRAINT chat_messages_cc_format
   CHECK (country_code IS NULL OR country_code ~ '^[A-Z]{2}$') NOT VALID;
 
 -- The purge trigger deletes by age on every insert; index keeps it cheap.

@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { memo } from "react";
 import { projects, projectTagsLine, type Project } from "@/app/data/projects";
-import { useProjectNavigation } from "@/app/utils/project-detail-navigation";
+import { useProjectNavigation } from "@/app/hooks/use-project-navigation";
 
 type ProjectGridCardProps = {
     project: Project;
