@@ -1,28 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { projects, type Project } from "@/app/data/projects";
-import { releaseDocumentScroll } from "@/app/utils/release-document-scroll";
-import {
-    prefersHardNavigationToProjectDetail,
-    projectDetailPath,
-} from "@/app/utils/project-detail-navigation";
-import {
-    logPrefersHardNavContext,
-    logProjectsScroll,
-} from "@/app/utils/projects-scroll-debug";
-
-function projectTagsLine(project: Project): string {
-    const tags = project.tech.slice(0, 3).map((t) => `[${t.toUpperCase()}]`);
-    if (tags.length === 0) {
-        return `[${project.year}]`;
-    }
-    return tags.join(" — ");
-}
+import { memo } from "react";
+import { projects, projectTagsLine, type Project } from "@/app/data/projects";
+import { useProjectNavigation } from "@/app/utils/project-detail-navigation";
 
 type ProjectGridCardProps = {
     project: Project;
@@ -88,73 +71,7 @@ const ProjectGridCard = memo(function ProjectGridCard({
 });
 
 export default function ProjectsPage() {
-    const router = useRouter();
-    const [isNavigating, setIsNavigating] = useState(false);
-    const [transitionKey, setTransitionKey] = useState(0);
-    const navTimeoutRef = useRef<number | null>(null);
-
-    const navigateToProject = useCallback(
-        (slug: string) => {
-            if (isNavigating) return;
-
-            const hard = prefersHardNavigationToProjectDetail();
-            logProjectsScroll("/projects card click", {
-                slug,
-                hardNavigation: hard,
-                targetPath: projectDetailPath(slug),
-                ...logPrefersHardNavContext(),
-            });
-
-            if (hard) {
-                logProjectsScroll("/projects -> location.assign (hard nav)", {
-                    slug,
-                    path: projectDetailPath(slug),
-                });
-                window.location.assign(projectDetailPath(slug));
-                return;
-            }
-
-            setIsNavigating(true);
-            setTransitionKey((value) => value + 1);
-
-            logProjectsScroll("/projects scroll lock ON (isNavigating)", {});
-
-            navTimeoutRef.current = window.setTimeout(() => {
-                logProjectsScroll("/projects -> router.push (soft nav)", {
-                    slug,
-                    path: projectDetailPath(slug),
-                });
-                window.sessionStorage.setItem("route-transition-lock", "1");
-                window.sessionStorage.setItem("project-transition-reveal", "1");
-                router.push(projectDetailPath(slug));
-            }, 620);
-        },
-        [isNavigating, router],
-    );
-
-    useEffect(() => {
-        return () => {
-            if (navTimeoutRef.current !== null) {
-                window.clearTimeout(navTimeoutRef.current);
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!isNavigating) return;
-
-        document.documentElement.classList.add("route-transition-lock");
-        document.body.classList.add("route-transition-lock");
-        document.documentElement.style.overflow = "hidden";
-        document.body.style.overflow = "hidden";
-
-        return () => {
-            logProjectsScroll("/projects scroll lock cleanup (releaseDocumentScroll)", {
-                wasNavigating: true,
-            });
-            releaseDocumentScroll();
-        };
-    }, [isNavigating]);
+    const { isNavigating, transitionKey, navigateToProject } = useProjectNavigation();
 
     return (
         <main className="min-h-screen w-full overflow-x-hidden border-t border-border bg-background text-foreground">
