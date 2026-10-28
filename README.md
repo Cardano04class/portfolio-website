@@ -59,6 +59,20 @@
 
 ---
 
+## Deploying
+
+Vercel's production branch is `prod`. Pushing `main` does not deploy (`vercel.json`); other branches get preview URLs.
+
+To release what is on `main`:
+
+```bash
+git push origin main:prod
+```
+
+To roll back, promote an earlier deployment in the Vercel dashboard.
+
+---
+
 ## 📬 Connect with Me
 - **Portfolio:** [https://m-amir.xyz/](https://m-amir.xyz/)
 - **Mail:** [cardano_class@proton.me](cardano_class@proton.me)
