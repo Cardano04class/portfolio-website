@@ -28,9 +28,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title,
   description,
-  icons: {
-    icon: "/favicon.svg",
-  },
   openGraph: { title, description, images: previewImage },
   twitter: {
     card: "summary_large_image",
