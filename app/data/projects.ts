@@ -14,72 +14,76 @@ export type Project = {
 export const projects: readonly Project[] = [
     {
         slug: "ft_transcendence",
-        title: "ft_transcendence: ClubsHub Ecosystem Platform",
+        title: "ft_transcendence: ClubsHub",
         description:
-            "ClubsHub is a full-stack web platform built for 1337 School's club ecosystem. It enables students to discover clubs, manage events, communicate in real time via Socket.io, and interact with an AI-assisted RAG chatbot for instant platform information.",
-        role: "DevOps Engineer & Continuous Testing",
+            "ClubsHub is a web platform for 1337 School's student clubs, built by a team of five. Students browse and join clubs, run events, chat in real time, and ask an AI assistant about the platform.\n\nI was responsible for continuous integration and testing, on the DevOps side of the team.",
+        role: "DevOps, continuous integration & testing (team of 5)",
         highlights: [
-            "Engineered full-stack 1337 School club ecosystem with real-time Socket.io communication channels.",
-            "Integrated AI-powered RAG chatbot & event content moderation pipelines for automated community support.",
-            "Configured robust multi-container Docker & Nginx infrastructure with 42 OAuth, 2FA, and Redis rate-limiting."
+            "Real-time club chat with Socket.IO, and a per-club role and permission system.",
+            "Sign-in with 42 Intra OAuth, two-factor auth, and JWT in HttpOnly cookies; Redis handles token blacklisting and rate limiting.",
+            "AI assistant using retrieval (Groq LLM, Voyage AI embeddings, ChromaDB), plus AI moderation of event content.",
+            "The whole stack runs in Docker Compose behind an NGINX reverse proxy with TLS.",
         ],
-        tech: ["React", "Node.js", "TypeScript", "Socket.io", "MongoDB", "Redis", "Docker", "AI / RAG"],
+        tech: ["TypeScript", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "Redis", "Docker", "NGINX"],
         github: "https://github.com/Cardano04class/ft_transcendence",
         featured: true,
-        year: "2025",
-        image: "/images/projects/transcendence.png"
+        year: "2026",
+        image: "/images/projects/transcendence.png",
     },
     {
         slug: "inception",
-        title: "Inception: System Infrastructure Virtualizer",
+        title: "Inception: Docker web infrastructure",
         description:
-            "A secure, multi-container virtualized web server infrastructure built inside Alpine Linux environments using Docker Compose pipelines.",
-        role: "System Architect",
+            "A WordPress site served from three containers I built from scratch with my own Dockerfiles, no prebuilt images: NGINX, WordPress with PHP-FPM, and MariaDB.\n\nDocker Compose wires them together on a private bridge network, and the site's data persists on the host between restarts.",
+        role: "Solo project",
         highlights: [
-            "Constructed fully sandboxed, modular container environments via Docker Compose structures.",
-            "Configured isolated custom system network layers, dynamic volume storage, and root SSL layers.",
-            "Orchestrated secure multi-service configurations running WordPress, Nginx, and databases."
+            "Each service has its own Dockerfile, based on Debian Bullseye.",
+            "NGINX is the only entry point and accepts HTTPS only.",
+            "Containers reach each other by name on a dedicated Docker bridge network.",
+            "Database and site files persist through bind mounts; configuration comes from environment variables.",
         ],
-        tech: ["Docker", "Alpine Linux", "Nginx", "TLS", "System Architecture"],
-        github: "https://github.com/Cardano04class",
+        tech: ["Docker", "Docker Compose", "NGINX", "WordPress", "PHP-FPM", "MariaDB", "TLS"],
+        github: "https://github.com/Cardano04class/Inception",
         featured: true,
         year: "2025",
-        image: "/images/projects/inception.png"
+        image: "/images/projects/inception.png",
     },
     {
         slug: "minishell",
-        title: "minishell: Custom Command-Line Interpreter",
+        title: "minishell: a Unix shell in C",
         description:
-            "A feature-complete POSIX-compliant Unix command-line shell built in C, managing pipeline forks, file descriptor trees, and redirections.",
-        role: "Systems Developer",
+            "A small bash-like shell written in C with a teammate. It reads a command line, splits it into tokens, parses it, and runs it: pipes, redirections, heredocs, environment variables and the usual builtins.\n\nThe project is mostly about processes and file descriptors: forking, wiring pipes between commands, and cleaning up afterwards.",
+        role: "Pair project",
         highlights: [
-            "Engineered a Unix shell execution loop complete with parsing trees and syntax validation.",
-            "Managed strict pipe connections, process redirections, file descriptor trees, and signals.",
-            "Implemented core POSIX shell builtins with absolute zero memory allocation leaks."
+            "A state-machine lexer that handles single and double quotes and special characters.",
+            "Syntax checking, variable expansion, quote removal, and heredocs.",
+            "Pipelines run with fork, pipe and dup2, with output and input redirections.",
+            "Builtins: cd, echo, env, exit, export and unset.",
         ],
-        tech: ["C", "POSIX", "Unix Systems", "Processes"],
-        github: "https://github.com/Cardano04class",
+        tech: ["C", "Unix processes", "Pipes", "File descriptors", "Signals"],
+        github: "https://github.com/Cardano04class/minishell",
         featured: true,
         year: "2024",
-        image: "/images/projects/minishell.png"
+        image: "/images/projects/minishell.png",
     },
     {
         slug: "push_swap",
-        title: "push_swap: Complexity Sort Optimizer",
+        title: "push_swap: sorting with two stacks",
         description:
-            "A highly optimized, mechanical Big-O stack sorting algorithm designed to minimize execution cost parameters via Pivot Partitions.",
-        role: "Algorithms Developer",
+            "Sort a list of integers using two stacks and a small set of moves (swap, push, rotate, reverse rotate), in as few moves as possible.\n\nMy solution picks, at each step, the number that is cheapest to move into its place in the other stack.",
+        role: "Solo project",
         highlights: [
-            "Designed mechanical sort cost weighing algorithms optimizing double stack arrays.",
-            "Minimized assembly list operations to theoretical limits under strict Big-O constraints.",
-            "Engineered efficient pivot chunk partition calculations for maximum performance scaling."
+            "For every number, computes how many rotations it costs to bring it and its target position to the top.",
+            "Rotates both stacks together when they go the same direction, to save moves.",
+            "Handles small inputs with a dedicated sort for three numbers.",
+            "Validates input and rejects duplicates and values outside the int range.",
         ],
-        tech: ["C", "Algorithms", "Big-O Optimization", "Complexity"],
-        github: "https://github.com/Cardano04class",
+        tech: ["C", "Algorithms", "Linked lists"],
+        github: "https://github.com/Cardano04class/Push_swap",
         featured: false,
         year: "2024",
-        image: "/images/projects/push_swap.png"
-    }
+        image: "/images/projects/push_swap.png",
+    },
 ];
 
 /** Tag line like `[REACT] — [NODE.JS] — [TYPESCRIPT]`; falls back to the year. */

@@ -153,7 +153,11 @@ export default function ProjectDescriptionPage({
                                 </h2>
                                 <div className="mt-6 h-px w-full bg-border sm:mt-8" aria-hidden />
                                 <div className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground sm:mt-8 sm:text-lg sm:leading-relaxed">
-                                    {rest ? <p className="wrap-break-word">{rest}</p> : null}
+                                    {rest.split(/\n\s*\n/).filter(Boolean).map((paragraph) => (
+                                        <p key={paragraph} className="wrap-break-word">
+                                            {paragraph}
+                                        </p>
+                                    ))}
                                 </div>
                             </div>
                         </div>
