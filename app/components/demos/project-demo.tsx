@@ -18,6 +18,11 @@ const DEMOS: Record<DemoId, { title: string; hint: string; Demo: ComponentType<D
         hint: "Type numbers or pick a random set, then play or step through every move.",
         Demo: dynamic(() => import("./push-swap/push-swap-demo"), { ssr: false, loading }),
     },
+    minishell: {
+        title: "minishell",
+        hint: "Click the terminal to type. ↑↓ history, Tab completes, Ctrl-C cancels, Esc leaves.",
+        Demo: dynamic(() => import("./minishell/terminal"), { ssr: false, loading }),
+    },
 };
 
 function useActive(ref: React.RefObject<HTMLElement | null>): boolean {
