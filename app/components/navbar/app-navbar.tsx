@@ -1,11 +1,17 @@
 "use client";
 
+import { SOCIAL_URLS } from "@/app/data/socials";
 import Link from "next/link";
 import { Github, MessageCircle, Moon, Send, Star, Sun, Users } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser-client";
+import {
+    DISPLAY_NAME_STORAGE_KEY,
+    MAX_CHAT_MESSAGE_LENGTH,
+    MAX_DISPLAY_NAME_LENGTH,
+} from "@/app/utils/chat-identity";
 import { countryCodeFromIanaTimeZone } from "@/app/utils/timezone-to-country-code";
 
 /** Messages older than this are dropped in the UI and purged in the database (see supabase/migrations). */
@@ -345,14 +351,14 @@ export default function AppNavbar() {
     }, [chatOpen]);
 
     useEffect(() => {
-        const STORAGE_KEY = "navbar-chat-display-name";
-        const stored = window.localStorage.getItem(STORAGE_KEY)?.trim() ?? "";
+        const stored =
+            window.localStorage.getItem(DISPLAY_NAME_STORAGE_KEY)?.trim().slice(0, MAX_DISPLAY_NAME_LENGTH) ?? "";
         let initial: string;
         if (stored.length > 0) {
             initial = stored;
         } else {
             initial = `Guest-${Math.floor(Math.random() * 9999).toString().padStart(4, "0")}`;
-            window.localStorage.setItem(STORAGE_KEY, initial);
+            window.localStorage.setItem(DISPLAY_NAME_STORAGE_KEY, initial);
         }
         userNameRef.current = initial;
         setDisplayName(initial);
@@ -544,7 +550,7 @@ export default function AppNavbar() {
     const navSurfaceClass = navSolidBg ? navSurfaceGlassClass : navSurfaceTopClass;
 
     const sendMessage = async () => {
-        const value = chatInput.trim();
+        const value = chatInput.trim().slice(0, MAX_CHAT_MESSAGE_LENGTH);
         if (!value) return;
         const now = new Date();
         const hh = now.getHours() % 12 || 12;
@@ -655,10 +661,10 @@ export default function AppNavbar() {
     const saveDisplayName = () => {
         const next = nameDraft.trim();
         if (!next) return;
-        const normalized = next.slice(0, 24);
+        const normalized = next.slice(0, MAX_DISPLAY_NAME_LENGTH);
         userNameRef.current = normalized;
         setDisplayName(normalized);
-        window.localStorage.setItem("navbar-chat-display-name", normalized);
+        window.localStorage.setItem(DISPLAY_NAME_STORAGE_KEY, normalized);
         setIsEditingName(false);
     };
 
@@ -789,6 +795,7 @@ export default function AppNavbar() {
                                         <input
                                             type="text"
                                             value={nameDraft}
+                                            maxLength={MAX_DISPLAY_NAME_LENGTH}
                                             onChange={(event) => setNameDraft(event.target.value)}
                                             onKeyDown={(event) => {
                                                 if (event.key === "Enter") saveDisplayName();
@@ -855,6 +862,7 @@ export default function AppNavbar() {
                                     <input
                                         type="text"
                                         value={chatInput}
+                                        maxLength={MAX_CHAT_MESSAGE_LENGTH}
                                         onChange={(event) => setChatInput(event.target.value)}
                                         onKeyDown={(event) => {
                                             if (event.key === "Enter") sendMessage();
@@ -880,7 +888,7 @@ export default function AppNavbar() {
                         </div>
 
                         <Link
-                            href="https://github.com/Cardano04class"
+                            href={SOCIAL_URLS.github}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 transition-colors sm:gap-2 sm:px-2.5 ${topButtonClass}`}

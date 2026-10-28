@@ -5,9 +5,7 @@ import { getSupabaseBrowserClient } from "@/lib/supabase-browser-client";
 import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-
-/** Same key as navbar chat so labels match. */
-const DISPLAY_NAME_STORAGE_KEY = "navbar-chat-display-name";
+import { DISPLAY_NAME_STORAGE_KEY, MAX_DISPLAY_NAME_LENGTH } from "@/app/utils/chat-identity";
 
 const REALTIME_CHANNEL = "portfolio-site-cursors";
 const CURSOR_EVENT = "cursor";
@@ -96,7 +94,7 @@ function readDisplayLabel(sessionOid: string): string {
     try {
         const saved = window.localStorage.getItem(DISPLAY_NAME_STORAGE_KEY);
         if (saved && saved.trim().length > 0) {
-            return saved.trim().slice(0, 24);
+            return saved.trim().slice(0, MAX_DISPLAY_NAME_LENGTH);
         }
     } catch {
         //
@@ -264,7 +262,7 @@ export default function CollaborativeCursors() {
         channel.on("broadcast", { event: CURSOR_EVENT }, ({ payload }) => {
             if (!isValidPayload(payload, oidRef.current)) return;
             const label =
-                payload.label.trim().length > 0 ? payload.label.trim().slice(0, 24) : "Guest";
+                payload.label.trim().length > 0 ? payload.label.trim().slice(0, MAX_DISPLAY_NAME_LENGTH) : "Guest";
             const row: PeerCursor = {
                 oid: payload.oid,
                 label,
