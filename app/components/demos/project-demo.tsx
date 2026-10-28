@@ -23,6 +23,11 @@ const DEMOS: Record<DemoId, { title: string; hint: string; Demo: ComponentType<D
         hint: "Run make to build and start the stack, then send a request through it. Try make down and request again.",
         Demo: dynamic(() => import("./inception/inception-demo"), { ssr: false, loading }),
     },
+    cub3d: {
+        title: "cub3D",
+        hint: "Click the view, then W A S D to move, ← → to turn, M for the minimap, Esc to leave.",
+        Demo: dynamic(() => import("./cub3d/cub3d-demo"), { ssr: false, loading }),
+    },
     minishell: {
         title: "minishell",
         hint: "Click the terminal to type. ↑↓ history, Tab completes, Ctrl-C cancels, Esc leaves.",

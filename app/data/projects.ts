@@ -9,9 +9,12 @@ import clubshubClubs from "@/src/projects/clubshub/club-selection.webp";
 import inceptionCover from "@/src/projects/inception/cover.webp";
 import minishellCover from "@/src/projects/minishell/cover.webp";
 import pushSwapCover from "@/src/projects/push_swap/cover.webp";
+import cub3dCover from "@/src/projects/cub3d/cover.webp";
+import cub3dCorridor from "@/src/projects/cub3d/corridor.webp";
+import cub3dRoom from "@/src/projects/cub3d/room.webp";
 
 /** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
-export type DemoId = "push_swap" | "minishell" | "inception";
+export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d";
 
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
@@ -29,6 +32,8 @@ export type Project = {
     /** Shown as a gallery on the detail page, after the description. */
     screenshots?: readonly ProjectScreenshot[];
     demo?: DemoId;
+    /** GitHub logins of teammates, linked on the project page. */
+    team?: readonly string[];
 };
 
 export const projects: readonly Project[] = [
@@ -48,6 +53,7 @@ export const projects: readonly Project[] = [
         ],
         tech: ["TypeScript", "React", "Node.js", "Express", "Socket.IO", "MongoDB", "Redis", "Docker", "NGINX"],
         github: "https://github.com/Cardano04class/ft_transcendence",
+        team: ["issam22-laafer", "chikhidev", "MohamedKartit", "mofassa1"],
         featured: true,
         year: "2026",
         image: clubshubLanding,
@@ -83,7 +89,7 @@ export const projects: readonly Project[] = [
         slug: "minishell",
         title: "minishell: a Unix shell in C",
         description:
-            "A small bash-like shell written in C with a teammate. It reads a command line, splits it into tokens, parses it, and runs it: pipes, redirections, heredocs, environment variables and the usual builtins.\n\nThe project is mostly about processes and file descriptors: forking, wiring pipes between commands, and cleaning up afterwards.",
+            "A small bash-like shell written in C with mobouifr. It reads a command line, splits it into tokens, parses it, and runs it: pipes, redirections, heredocs, environment variables and the usual builtins.\n\nThe project is mostly about processes and file descriptors: forking, wiring pipes between commands, and cleaning up afterwards.",
         role: "Pair project",
         highlights: [
             "A state-machine lexer that handles single and double quotes and special characters.",
@@ -93,10 +99,35 @@ export const projects: readonly Project[] = [
         ],
         tech: ["C", "Unix processes", "Pipes", "File descriptors", "Signals"],
         github: "https://github.com/Cardano04class/minishell",
+        team: ["mobouifr"],
         demo: "minishell",
         featured: true,
         year: "2024",
         image: minishellCover,
+    },
+    {
+        slug: "cub3d",
+        title: "cub3D: a raycaster in C",
+        description:
+            "A first-person maze in the style of Wolfenstein 3D, written in C with mobouifr on top of the MiniLibX graphics library. Every frame casts one ray per screen column and draws a textured wall slice whose height depends on the distance.\n\nThe map comes from a .cub file that sets the four wall textures, the floor and ceiling colours, and a grid of walls with the player's start. The demo below runs the same algorithm, ported to TypeScript, on the repo's own maps.",
+        role: "Pair project",
+        highlights: [
+            "Ray casting with DDA: one ray per column across a 60° field of view, with the fisheye distortion corrected.",
+            "A different texture for each wall face (north, south, east, west), chosen from the ray direction and the side it hits.",
+            "A .cub parser that checks the colours, the textures, a single player and walls closing the map.",
+            "W A S D to move and the arrow keys to turn, with collision that slides along walls.",
+        ],
+        tech: ["C", "MiniLibX", "Raycasting", "Linear algebra"],
+        github: "https://github.com/Cardano04class/cub3d",
+        team: ["mobouifr"],
+        featured: false,
+        year: "2025",
+        image: cub3dCover,
+        screenshots: [
+            { image: cub3dCorridor, caption: "Long corridor in the repo's bigger map" },
+            { image: cub3dRoom, caption: "Textures change with the wall's facing direction" },
+        ],
+        demo: "cub3d",
     },
     {
         slug: "push_swap",
