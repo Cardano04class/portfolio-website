@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { logProjectsScroll } from "@/app/utils/projects-scroll-debug";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -25,6 +24,7 @@ function getWindowWithLenis(): WindowWithLenis {
  */
 function shouldUseLenis(): boolean {
   if (typeof window === "undefined") return false;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
   if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
     return false;
   }
@@ -110,12 +110,6 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
     const win = getWindowWithLenis();
     const lenis = win.lenis;
-    logProjectsScroll("SmoothScroll pathname change", {
-      pathname,
-      lenisInstance: Boolean(lenis),
-      shouldUseLenis: shouldUseLenis(),
-      nativeScrollOnProjectsList: pathname === "/projects",
-    });
     if (!lenis) return;
 
     const id = window.requestAnimationFrame(() => {

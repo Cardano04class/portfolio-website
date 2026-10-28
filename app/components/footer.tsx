@@ -1,5 +1,6 @@
 "use client";
 
+import { SOCIAL_URLS } from "@/app/data/socials";
 import { useGSAP } from "@/app/hooks/useGSAP";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,11 +11,11 @@ if (typeof window !== "undefined") {
 }
 
 const socialLinks = [
-    { name: "Email", icon: Mail, url: "mailto:cardano_class@proton.me" },
-    { name: "GitHub", icon: Github, url: "https://github.com/Cardano04class" },
-    { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/mohamedamineamir/" },
-    { name: "Twitter", icon: Twitter, url: "https://x.com/cardano_class" },
-    { name: "Instagram", icon: Instagram, url: "https://www.instagram.com/ma04amir/" },
+    { name: "Email", icon: Mail, url: SOCIAL_URLS.email },
+    { name: "GitHub", icon: Github, url: SOCIAL_URLS.github },
+    { name: "LinkedIn", icon: Linkedin, url: SOCIAL_URLS.linkedin },
+    { name: "Twitter", icon: Twitter, url: SOCIAL_URLS.x },
+    { name: "Instagram", icon: Instagram, url: SOCIAL_URLS.instagram },
 ];
 
 export default function Footer() {

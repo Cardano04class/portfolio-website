@@ -1,10 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useState, type ReactNode } from "react";
-import { releaseDocumentScroll } from "@/app/utils/release-document-scroll";
-import { logProjectsScroll } from "@/app/utils/projects-scroll-debug";
+import {
+  PROJECT_TRANSITION_REVEAL_KEY,
+  ROUTE_TRANSITION_LOCK_KEY,
+  lockDocumentScroll,
+  releaseDocumentScroll,
+} from "@/app/utils/release-document-scroll";
 
 type PageTransitionProps = {
   children: ReactNode;
@@ -16,13 +20,13 @@ export default function PageTransition({ children }: PageTransitionProps) {
   const [lockScroll, setLockScroll] = useState(false);
 
   useLayoutEffect(() => {
-    const persistedLock = window.sessionStorage.getItem("route-transition-lock") === "1";
+    const persistedLock = window.sessionStorage.getItem(ROUTE_TRANSITION_LOCK_KEY) === "1";
     if (persistedLock) {
       setLockScroll(true);
-      window.sessionStorage.removeItem("route-transition-lock");
+      window.sessionStorage.removeItem(ROUTE_TRANSITION_LOCK_KEY);
     }
 
-    const shouldReveal = window.sessionStorage.getItem("project-transition-reveal") === "1";
+    const shouldReveal = window.sessionStorage.getItem(PROJECT_TRANSITION_REVEAL_KEY) === "1";
     if (!shouldReveal) {
       setPlayReveal(false);
       setLockScroll(false);
@@ -30,7 +34,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
       return;
     }
 
-    window.sessionStorage.removeItem("project-transition-reveal");
+    window.sessionStorage.removeItem(PROJECT_TRANSITION_REVEAL_KEY);
     const shouldPlay = pathname.startsWith("/projects/");
     setPlayReveal(shouldPlay);
     if (shouldPlay) {
@@ -40,23 +44,14 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
   useEffect(() => {
     if (!lockScroll) return;
-    logProjectsScroll("PageTransition applying DOM scroll lock", { lockScroll });
-    document.documentElement.classList.add("route-transition-lock");
-    document.body.classList.add("route-transition-lock");
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      logProjectsScroll("PageTransition lock effect cleanup -> releaseDocumentScroll");
-      releaseDocumentScroll();
-    };
+    lockDocumentScroll();
+    return releaseDocumentScroll;
   }, [lockScroll]);
 
   // Failsafe: always release scroll lock even if animation callback is skipped
   useEffect(() => {
     if (!playReveal) return;
     const timeoutId = window.setTimeout(() => {
-      logProjectsScroll("PageTransition failsafe timeout -> unlock", { pathname });
       setPlayReveal(false);
       setLockScroll(false);
       releaseDocumentScroll();
@@ -91,7 +86,6 @@ export default function PageTransition({ children }: PageTransitionProps) {
               },
             }}
             onAnimationComplete={() => {
-              logProjectsScroll("PageTransition onAnimationComplete -> unlock", { pathname });
               setPlayReveal(false);
               setLockScroll(false);
               releaseDocumentScroll();

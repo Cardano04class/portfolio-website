@@ -3,7 +3,6 @@ import Link from "next/link";
 import type { ReactElement } from "react";
 import type { Project } from "@/app/data/projects";
 import ProjectPageEnter from "@/app/components/project-page-enter";
-import ProjectDetailScrollDebug from "@/app/components/project-detail-scroll-debug";
 
 type ProjectDescriptionPageProps = {
     project: Project;
@@ -42,7 +41,6 @@ export default function ProjectDescriptionPage({
 
     return (
         <main className="w-full overflow-x-hidden bg-background text-foreground">
-            <ProjectDetailScrollDebug slug={project.slug} />
             <ProjectPageEnter>
                 {/* —— Full-viewport hero (reference: full-bleed image, scroll for content) —— */}
                 <section

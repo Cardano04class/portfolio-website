@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { EMAIL, SOCIAL_URLS } from "@/app/data/socials";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@/app/hooks/useGSAP";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,20 +13,23 @@ if (typeof window !== "undefined") {
 
 export default function Contact() {
     const [copied, setCopied] = useState(false);
-    const emailRef = useRef<HTMLAnchorElement>(null);
+    const copiedTimeoutRef = useRef<number | undefined>(undefined);
+
+    useEffect(() => () => window.clearTimeout(copiedTimeoutRef.current), []);
 
     const socialLinks = [
-        { name: "GitHub", icon: Github, url: "https://github.com/Cardano04class" },
-        { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/mohamedamineamir/" },
-        { name: "Twitter", icon: Twitter, url: "https://x.com/cardano_class" },
-        { name: "Instagram", icon: Instagram, url: "https://www.instagram.com/ma04amir/" }
+        { name: "GitHub", icon: Github, url: SOCIAL_URLS.github },
+        { name: "LinkedIn", icon: Linkedin, url: SOCIAL_URLS.linkedin },
+        { name: "Twitter", icon: Twitter, url: SOCIAL_URLS.x },
+        { name: "Instagram", icon: Instagram, url: SOCIAL_URLS.instagram }
     ];
 
     const copyEmail = (e: React.MouseEvent) => {
         e.preventDefault();
-        navigator.clipboard.writeText("cardano_class@proton.me");
+        navigator.clipboard.writeText(EMAIL);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        window.clearTimeout(copiedTimeoutRef.current);
+        copiedTimeoutRef.current = window.setTimeout(() => setCopied(false), 2000);
     };
 
     const containerRef = useGSAP(() => {
@@ -62,20 +66,6 @@ export default function Contact() {
             duration: 0.8,
             ease: "back.out(1.2)"
         }, "-=0.6");
-
-        // Hover effect for email card using GSAP
-        const emailCard = emailRef.current;
-        if(emailCard) {
-            emailCard.addEventListener("mouseenter", () => {
-                gsap.to(emailCard, { scale: 1.02, duration: 0.3, ease: "power2.out" });
-                gsap.to(".email-icon", { x: 5, y: -5, duration: 0.3 }); // slightly move arrow
-            });
-            emailCard.addEventListener("mouseleave", () => {
-                gsap.to(emailCard, { scale: 1, duration: 0.3, ease: "power2.out" });
-                gsap.to(".email-icon", { x: 0, y: 0, duration: 0.3 });
-            });
-        }
-
     }, []);
 
     return (
@@ -133,16 +123,15 @@ export default function Contact() {
                     {/* Right Column: Interactive Email Card */}
                     <div className="w-full h-full flex flex-col justify-center lg:pt-12">
                         <a 
-                            ref={emailRef}
-                            href="mailto:cardano_class@proton.me"
+                            href={SOCIAL_URLS.email}
                             className="email-card group relative block w-full h-[300px] lg:h-[400px] overflow-hidden bg-transparent border-t border-border hover:border-foreground/50 transition-colors duration-500 pt-8 sm:pt-12"
                         >
-                            <div className="relative h-full flex flex-col justify-between z-10 px-2 sm:px-0">
+                            <div className="relative h-full flex flex-col justify-between z-10 px-2 sm:px-0 transition-transform duration-300 ease-out group-hover:scale-[1.02] motion-reduce:transition-none">
                                 <div className="flex justify-between items-start">
                                     <div className="p-0">
                                         <Mail className="w-8 h-8 text-foreground/50 group-hover:text-foreground transition-colors duration-500" />
                                     </div>
-                                    <div className="email-icon">
+                                    <div className="email-icon transition-transform duration-300 group-hover:translate-x-[5px] group-hover:-translate-y-[5px] motion-reduce:transition-none">
                                         <ArrowUpRight className="w-8 h-8 text-foreground/35 group-hover:text-foreground group-hover:rotate-45 transition-all duration-300" />
                                     </div>
                                 </div>

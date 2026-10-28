@@ -2,19 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { projects, type Project } from "@/app/data/projects";
-import { releaseDocumentScroll } from "@/app/utils/release-document-scroll";
-import {
-    prefersHardNavigationToProjectDetail,
-    projectDetailPath,
-} from "@/app/utils/project-detail-navigation";
-import { logPrefersHardNavContext, logProjectsScroll } from "@/app/utils/projects-scroll-debug";
+import { projects, projectTagsLine, type Project } from "@/app/data/projects";
+import { useProjectNavigation } from "@/app/hooks/use-project-navigation";
 import { useShootModeOn } from "@/app/utils/shoot-mode-store";
 
 if (typeof window !== "undefined") {
@@ -28,15 +22,6 @@ function categoryLabel(project: Project): string {
     const primary = project.tech[0] ?? "Build";
     const secondary = project.tech[1] ?? project.year;
     return `[${primary.toUpperCase()}] — [${secondary.toUpperCase()}]`;
-}
-
-/** Stacked layout tag line (reference-style multiple brackets). */
-function projectTagsLine(project: Project): string {
-    const tags = project.tech.slice(0, 3).map((t) => `[${t.toUpperCase()}]`);
-    if (tags.length === 0) {
-        return `[${project.year}]`;
-    }
-    return tags.join(" — ");
 }
 
 type DesktopGalleryProps = {
@@ -214,19 +199,20 @@ const ProjectsDesktopGallery = memo(function ProjectsDesktopGallery({
 
 export default function Projects() {
     const shootModeOn = useShootModeOn();
-    const router = useRouter();
     const featured = useMemo(() => projects.slice(0, FEATURED_COUNT), []);
     const sectionRef = useRef<HTMLElement>(null);
     const viewportRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
     const pinnedScrollTriggerRef = useRef<ScrollTrigger | null>(null);
-    const navTimeoutRef = useRef<number | null>(null);
     const lastScrubIndexRef = useRef(0);
     const scrubRafRef = useRef(0);
     const scrubQueuedIdxRef = useRef(0);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [isNavigating, setIsNavigating] = useState(false);
-    const [transitionKey, setTransitionKey] = useState(0);
+    const {
+        isNavigating,
+        transitionKey,
+        navigateToProject: goToProject,
+    } = useProjectNavigation(shootModeOn);
     const [portalReady, setPortalReady] = useState(false);
 
     useEffect(() => {
@@ -251,69 +237,6 @@ export default function Projects() {
         },
         [shootModeOn],
     );
-
-    const goToProject = useCallback(
-        (slug: string) => {
-            if (shootModeOn) return;
-            if (isNavigating) return;
-
-            const hard = prefersHardNavigationToProjectDetail();
-            logProjectsScroll("home #projects goToProject click", {
-                slug,
-                hardNavigation: hard,
-                targetPath: projectDetailPath(slug),
-                ...logPrefersHardNavContext(),
-            });
-
-            if (hard) {
-                logProjectsScroll("home #projects -> location.assign (hard nav)", {
-                    slug,
-                    path: projectDetailPath(slug),
-                });
-                window.location.assign(projectDetailPath(slug));
-                return;
-            }
-
-            setIsNavigating(true);
-            setTransitionKey((v) => v + 1);
-            logProjectsScroll("home #projects scroll lock ON (isNavigating)", {});
-
-            navTimeoutRef.current = window.setTimeout(() => {
-                logProjectsScroll("home #projects -> router.push (soft nav)", {
-                    slug,
-                    path: projectDetailPath(slug),
-                });
-                window.sessionStorage.setItem("route-transition-lock", "1");
-                window.sessionStorage.setItem("project-transition-reveal", "1");
-                router.push(projectDetailPath(slug));
-            }, 620);
-        },
-        [isNavigating, router, shootModeOn],
-    );
-
-    useEffect(() => {
-        return () => {
-            if (navTimeoutRef.current !== null) {
-                window.clearTimeout(navTimeoutRef.current);
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!isNavigating) return;
-
-        document.documentElement.classList.add("route-transition-lock");
-        document.body.classList.add("route-transition-lock");
-        document.documentElement.style.overflow = "hidden";
-        document.body.style.overflow = "hidden";
-
-        return () => {
-            logProjectsScroll("home #projects scroll lock cleanup (releaseDocumentScroll)", {
-                wasNavigating: true,
-            });
-            releaseDocumentScroll();
-        };
-    }, [isNavigating]);
 
     useEffect(() => {
         const section = sectionRef.current;

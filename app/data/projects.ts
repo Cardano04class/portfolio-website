@@ -1,5 +1,3 @@
-import { PROJECT_DESCRIPTIONS } from "./project-descriptions";
-
 export type Project = {
     slug: string;
     title: string;
@@ -8,18 +6,17 @@ export type Project = {
     highlights: readonly string[];
     tech: readonly string[];
     github: string;
-    live: string;
     featured: boolean;
     year: string;
     image: string;
 };
 
-type ProjectCore = Omit<Project, "description">;
-
-const projectCoreList: readonly ProjectCore[] = [
+export const projects: readonly Project[] = [
     {
         slug: "ft_transcendence",
         title: "ft_transcendence: ClubsHub Ecosystem Platform",
+        description:
+            "ClubsHub is a full-stack web platform built for 1337 School's club ecosystem. It enables students to discover clubs, manage events, communicate in real time via Socket.io, and interact with an AI-assisted RAG chatbot for instant platform information.",
         role: "DevOps Engineer & Continuous Testing",
         highlights: [
             "Engineered full-stack 1337 School club ecosystem with real-time Socket.io communication channels.",
@@ -28,7 +25,6 @@ const projectCoreList: readonly ProjectCore[] = [
         ],
         tech: ["React", "Node.js", "TypeScript", "Socket.io", "MongoDB", "Redis", "Docker", "AI / RAG"],
         github: "https://github.com/Cardano04class/ft_transcendence",
-        live: "https://github.com/Cardano04class/ft_transcendence",
         featured: true,
         year: "2025",
         image: "/images/projects/transcendence.png"
@@ -36,6 +32,8 @@ const projectCoreList: readonly ProjectCore[] = [
     {
         slug: "inception",
         title: "Inception: System Infrastructure Virtualizer",
+        description:
+            "A secure, multi-container virtualized web server infrastructure built inside Alpine Linux environments using Docker Compose pipelines.",
         role: "System Architect",
         highlights: [
             "Constructed fully sandboxed, modular container environments via Docker Compose structures.",
@@ -44,7 +42,6 @@ const projectCoreList: readonly ProjectCore[] = [
         ],
         tech: ["Docker", "Alpine Linux", "Nginx", "TLS", "System Architecture"],
         github: "https://github.com/Cardano04class",
-        live: "https://github.com/Cardano04class",
         featured: true,
         year: "2025",
         image: "/images/projects/inception.png"
@@ -52,6 +49,8 @@ const projectCoreList: readonly ProjectCore[] = [
     {
         slug: "minishell",
         title: "minishell: Custom Command-Line Interpreter",
+        description:
+            "A feature-complete POSIX-compliant Unix command-line shell built in C, managing pipeline forks, file descriptor trees, and redirections.",
         role: "Systems Developer",
         highlights: [
             "Engineered a Unix shell execution loop complete with parsing trees and syntax validation.",
@@ -60,7 +59,6 @@ const projectCoreList: readonly ProjectCore[] = [
         ],
         tech: ["C", "POSIX", "Unix Systems", "Processes"],
         github: "https://github.com/Cardano04class",
-        live: "https://github.com/Cardano04class",
         featured: true,
         year: "2024",
         image: "/images/projects/minishell.png"
@@ -68,6 +66,8 @@ const projectCoreList: readonly ProjectCore[] = [
     {
         slug: "push_swap",
         title: "push_swap: Complexity Sort Optimizer",
+        description:
+            "A highly optimized, mechanical Big-O stack sorting algorithm designed to minimize execution cost parameters via Pivot Partitions.",
         role: "Algorithms Developer",
         highlights: [
             "Designed mechanical sort cost weighing algorithms optimizing double stack arrays.",
@@ -76,17 +76,17 @@ const projectCoreList: readonly ProjectCore[] = [
         ],
         tech: ["C", "Algorithms", "Big-O Optimization", "Complexity"],
         github: "https://github.com/Cardano04class",
-        live: "https://github.com/Cardano04class",
         featured: false,
         year: "2024",
         image: "/images/projects/push_swap.png"
     }
 ];
 
-export const projects: readonly Project[] = projectCoreList.map((core) => ({
-    ...core,
-    description: PROJECT_DESCRIPTIONS[core.slug] ?? ""
-}));
+/** Tag line like `[REACT] — [NODE.JS] — [TYPESCRIPT]`; falls back to the year. */
+export function projectTagsLine(project: Project): string {
+    const tags = project.tech.slice(0, 3).map((t) => `[${t.toUpperCase()}]`);
+    return tags.length === 0 ? `[${project.year}]` : tags.join(" — ");
+}
 
 export function getProjectBySlug(slug: string): Project | undefined {
     return projects.find((p) => p.slug === slug);

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { m, type Variants } from "framer-motion";
+import { m, type Variants } from "motion/react";
 import { ArrowDownRight } from "lucide-react";
 import { useHydrationSafeReducedMotion } from "@/app/hooks/use-hydration-safe-reduced-motion";
 import { cn } from "@/lib/utils";
