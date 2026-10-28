@@ -10,6 +10,9 @@ import inceptionCover from "@/src/projects/inception/cover.webp";
 import minishellCover from "@/src/projects/minishell/cover.webp";
 import pushSwapCover from "@/src/projects/push_swap/cover.webp";
 
+/** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
+export type DemoId = "push_swap";
+
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
 export type Project = {
@@ -25,6 +28,7 @@ export type Project = {
     image: StaticImageData;
     /** Shown as a gallery on the detail page, after the description. */
     screenshots?: readonly ProjectScreenshot[];
+    demo?: DemoId;
 };
 
 export const projects: readonly Project[] = [
@@ -106,6 +110,7 @@ export const projects: readonly Project[] = [
         ],
         tech: ["C", "Algorithms", "Linked lists"],
         github: "https://github.com/Cardano04class/Push_swap",
+        demo: "push_swap",
         featured: false,
         year: "2024",
         image: pushSwapCover,

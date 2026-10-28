@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactElement } from "react";
 import type { Project } from "@/app/data/projects";
 import ProjectPageEnter from "@/app/components/project-page-enter";
+import ProjectDemo from "@/app/components/demos/project-demo";
 
 type ProjectDescriptionPageProps = {
     project: Project;
@@ -183,6 +184,17 @@ export default function ProjectDescriptionPage({
                                 </ul>
                             </div>
                         </div>
+
+                        {project.demo ? (
+                            <div className="mt-16 border-t border-border pt-14 sm:mt-20 sm:pt-16 md:mt-24 md:pt-20">
+                                <h2 className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground sm:text-[11px]">
+                                    Try it
+                                </h2>
+                                <div className="mt-8">
+                                    <ProjectDemo id={project.demo} cover={project.image} />
+                                </div>
+                            </div>
+                        ) : null}
 
                         {project.screenshots?.length ? (
                             <div className="mt-16 border-t border-border pt-14 sm:mt-20 sm:pt-16 md:mt-24 md:pt-20">
