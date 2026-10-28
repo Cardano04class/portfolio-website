@@ -19,9 +19,8 @@
 
 ## ✨ Features
 - **Minimalist Design & Architecture**: Clean typography, elegant aesthetic, and subtle micro-interactions.
-- **3D & Interactive Visuals**: Powered by Three.js / React Three Fiber and GSAP / Framer Motion animations.
+- **3D & Interactive Visuals**: Powered by Three.js / React Three Fiber and GSAP / Motion animations.
 - **Smooth Scrolling**: Lenis smooth scrolling integration.
-- **Collaborative Real-time Cursors**: Live peer cursors enabled via Supabase Realtime.
 - **Dynamic Projects & Details**: Dedicated project showcases and detail pages.
 - **Fully Responsive & Dark/Light Theme**: Seamless support across all screen sizes and preference modes.
 
@@ -31,9 +30,8 @@
 - **Framework**: [Next.js](https://nextjs.org/) (App Router)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Animations & 3D**: [Three.js](https://threejs.org/) / React Three Fiber, [GSAP](https://gsap.com/), [Framer Motion](https://www.framer.com/motion/)
+- **Animations & 3D**: [Three.js](https://threejs.org/) / React Three Fiber, [GSAP](https://gsap.com/), [Motion](https://motion.dev/)
 - **Smooth Scroll**: [Lenis](https://lenis.darkroom.engineering/)
-- **Realtime**: [Supabase](https://supabase.com/)
 - **Deployment**: [Vercel](https://vercel.com/)
 
 ---
