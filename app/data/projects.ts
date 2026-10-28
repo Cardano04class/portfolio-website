@@ -11,7 +11,7 @@ import minishellCover from "@/src/projects/minishell/cover.webp";
 import pushSwapCover from "@/src/projects/push_swap/cover.webp";
 
 /** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
-export type DemoId = "push_swap" | "minishell";
+export type DemoId = "push_swap" | "minishell" | "inception";
 
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
@@ -74,6 +74,7 @@ export const projects: readonly Project[] = [
         ],
         tech: ["Docker", "Docker Compose", "NGINX", "WordPress", "PHP-FPM", "MariaDB", "TLS"],
         github: "https://github.com/Cardano04class/Inception",
+        demo: "inception",
         featured: true,
         year: "2025",
         image: inceptionCover,

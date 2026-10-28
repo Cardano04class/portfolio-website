@@ -18,6 +18,11 @@ const DEMOS: Record<DemoId, { title: string; hint: string; Demo: ComponentType<D
         hint: "Type numbers or pick a random set, then play or step through every move.",
         Demo: dynamic(() => import("./push-swap/push-swap-demo"), { ssr: false, loading }),
     },
+    inception: {
+        title: "inception",
+        hint: "Run make to build and start the stack, then send a request through it. Try make down and request again.",
+        Demo: dynamic(() => import("./inception/inception-demo"), { ssr: false, loading }),
+    },
     minishell: {
         title: "minishell",
         hint: "Click the terminal to type. ↑↓ history, Tab completes, Ctrl-C cancels, Esc leaves.",
