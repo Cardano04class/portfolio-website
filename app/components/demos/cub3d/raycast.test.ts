@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { castRay, isWalkable, makeTextures, parseCub, render, step } from "./raycast.ts";
+import sharp from "sharp";
+import { castRay, isWalkable, parseCub, render, step, type Texture } from "./raycast.ts";
 import { MAPS } from "./maps.ts";
 
 test("the repo's maps parse: colours, size, spawn at tile centre facing the letter", () => {
@@ -56,13 +57,34 @@ test("rotation wraps into [0, 2π)", () => {
     assert.ok(p.angle > 6 && p.angle < 2 * Math.PI);
 });
 
-test("render fills every pixel (ceiling, floor, walls) without throwing at any angle", () => {
+test("render fills every pixel (ceiling, floor, walls) without throwing at any angle", async () => {
     const m = parseCub(MAPS.big);
-    const tex = makeTextures();
+    const tex = await Promise.all(m.faces.map(load));
     const buf = new Uint32Array(160 * 80);
     for (let a = 0; a < 2 * Math.PI; a += 0.3) {
         buf.fill(0);
         render(buf, 160, 80, m, { ...m.spawn, angle: a }, tex);
         assert.ok(buf.every((v) => v !== 0));
     }
+});
+
+/** Decodes a texture PNG with sharp (installed with Next.js) into the renderer's pixel format. */
+async function load(name: string): Promise<Texture> {
+    const { data, info } = await sharp(`src/projects/cub3d/textures/${name}.png`).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    return { size: info.width, px: new Uint32Array(data.buffer, data.byteOffset, data.length / 4) };
+}
+
+test("each map uses the textures its .cub names, like the repo", () => {
+    assert.deepEqual(parseCub(MAPS.big).faces, ["TECH_3B", "TECH_3B", "TECH_1C", "TECH_1C"]);
+    assert.deepEqual(parseCub(MAPS.small).faces, ["TECH_3B", "TECH_3B", "TECH_3B", "TECH_3B"]);
+});
+
+test("the repo's textures are drawn: wall pixels come from the TECH_3B palette", async () => {
+    const m = parseCub(MAPS.small);
+    const tex = await Promise.all(m.faces.map(load));
+    const palette = new Set(tex[0].px);
+    const buf = new Uint32Array(160 * 80);
+    render(buf, 160, 80, m, { ...m.spawn, angle: Math.PI }, tex); // looking down the corridor at a wall
+    const wall = buf[40 * 160 + 80];
+    assert.ok(palette.has(wall), wall.toString(16));
 });
