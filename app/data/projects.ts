@@ -11,11 +11,13 @@ import minishellCover from "@/src/projects/minishell/cover.webp";
 import pushSwapCover from "@/src/projects/push_swap/cover.webp";
 import cub3dCover from "@/src/projects/cub3d/cover.webp";
 import soLongCover from "@/src/projects/so_long/cover.webp";
+import philoCover from "@/src/projects/philosophers/cover.webp";
+import netpracticeCover from "@/src/projects/netpractice/cover.webp";
 import cub3dCorridor from "@/src/projects/cub3d/corridor.webp";
 import cub3dRoom from "@/src/projects/cub3d/room.webp";
 
 /** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
-export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d" | "so_long";
+export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d" | "so_long" | "philosophers" | "netpractice";
 
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
@@ -148,6 +150,44 @@ export const projects: readonly Project[] = [
         year: "2024",
         image: soLongCover,
         demo: "so_long",
+    },
+    {
+        slug: "philosophers",
+        title: "Philosophers: threads and mutexes",
+        description:
+            "The dining philosophers problem in C with POSIX threads. Each philosopher is a thread that takes two forks (mutexes), eats, sleeps and thinks; a monitor thread stops the dinner the moment one of them goes too long without eating, or once everyone has eaten enough.\n\nThe demo below replays the same rules on a virtual clock, so you can watch the forks change hands at any speed. Its logs match the compiled program's.",
+        role: "Solo project",
+        highlights: [
+            "One thread per philosopher and one mutex per fork, plus a monitor mutex for shared state and printing.",
+            "Deadlock avoided by fork order: odd philosophers take their right fork first, even ones their left.",
+            "A monitor thread detects a death within milliseconds, or ends the run once every philosopher has eaten the given number of meals.",
+            "Arguments are validated: 1 to 200 philosophers, times of at least 60 ms, numbers only.",
+        ],
+        tech: ["C", "POSIX threads", "Mutexes", "Concurrency"],
+        github: "https://github.com/Cardano04class/Philosophers",
+        featured: false,
+        year: "2024",
+        image: philoCover,
+        demo: "philosophers",
+    },
+    {
+        slug: "netpractice",
+        title: "NetPractice: TCP/IP addressing",
+        description:
+            "A set of networking exercises: configure small networks so hosts can talk to each other. Each level gives hosts, switches and routers with some fields filled in; the rest (IP addresses, masks and routes) must be chosen so that every packet gets where it needs to go.\n\nThe demo below generates three levels with fresh addresses on every visit and checks your answers the same way: valid host addresses, matching networks on each wire, and routes that carry the packet there and back.",
+        role: "Solo project",
+        highlights: [
+            "Subnetting with masks in both forms (255.255.255.128 and /25), and their network and broadcast addresses.",
+            "Hosts on one switch must share a network and a mask, without using its network or broadcast address.",
+            "Routing through a router: default routes on the client side, and a return route on the internet side.",
+            "Reserved ranges such as 127.0.0.0/8 and multicast are not valid host addresses.",
+        ],
+        tech: ["TCP/IP", "Subnetting", "Routing"],
+        github: "https://github.com/Cardano04class/NetPractice",
+        featured: false,
+        year: "2025",
+        image: netpracticeCover,
+        demo: "netpractice",
     },
     {
         slug: "push_swap",
