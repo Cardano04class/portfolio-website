@@ -23,6 +23,16 @@ const DEMOS: Record<DemoId, { title: string; hint: string; Demo: ComponentType<D
         hint: "Run make to build and start the stack, then send a request through it. Try make down and request again.",
         Demo: dynamic(() => import("./inception/inception-demo"), { ssr: false, loading }),
     },
+    philosophers: {
+        title: "philo",
+        hint: "Pick a preset or type the program's arguments: number_of_philosophers time_to_die time_to_eat time_to_sleep [meals].",
+        Demo: dynamic(() => import("./philosophers/philosophers-demo"), { ssr: false, loading }),
+    },
+    netpractice: {
+        title: "NetPractice",
+        hint: "Fill the white fields with IPs, masks (255.255.255.0 or /24) and routes, then Check. New addresses gives a fresh puzzle.",
+        Demo: dynamic(() => import("./netpractice/netpractice-demo"), { ssr: false, loading }),
+    },
     so_long: {
         title: "so_long",
         hint: "Click the board, then W A S D or arrows. Collect every bomb, then the door opens. Esc to leave.",
