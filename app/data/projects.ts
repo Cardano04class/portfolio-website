@@ -13,11 +13,12 @@ import cub3dCover from "@/src/projects/cub3d/cover.webp";
 import soLongCover from "@/src/projects/so_long/cover.webp";
 import philoCover from "@/src/projects/philosophers/cover.webp";
 import netpracticeCover from "@/src/projects/netpractice/cover.webp";
+import ircCover from "@/src/projects/ft_irc/cover.webp";
 import cub3dCorridor from "@/src/projects/cub3d/corridor.webp";
 import cub3dRoom from "@/src/projects/cub3d/room.webp";
 
 /** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
-export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d" | "so_long" | "philosophers" | "netpractice";
+export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d" | "so_long" | "philosophers" | "netpractice" | "ft_irc";
 
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
@@ -188,6 +189,26 @@ export const projects: readonly Project[] = [
         year: "2025",
         image: netpracticeCover,
         demo: "netpractice",
+    },
+    {
+        slug: "ft_irc",
+        title: "ft_irc: an IRC server in C++",
+        description:
+            "A small IRC server written in C++98 with Souitaaa. It accepts multiple clients, registers them with a password, and lets them talk in channels using the IRC protocol. The demo simulates the server in your browser: send raw commands and watch both the protocol replies and the chat.",
+        role: "Pair project",
+        highlights: [
+            "Client registration with PASS, NICK and USER, followed by the standard welcome burst.",
+            "Channels support operators, invite-only access, keys, user limits and topics.",
+            "Commands include JOIN, PART, PRIVMSG, NOTICE, KICK, INVITE, TOPIC, MODE and QUIT.",
+            "The demo shows raw server replies beside a friendly view of #42.",
+        ],
+        tech: ["C++98", "IRC protocol", "Sockets", "Non-blocking I/O"],
+        github: "https://github.com/Souitaaa/ft_irc",
+        team: ["Souitaaa"],
+        demo: "ft_irc",
+        featured: false,
+        year: "2025",
+        image: ircCover,
     },
     {
         slug: "push_swap",

@@ -48,6 +48,11 @@ const DEMOS: Record<DemoId, { title: string; hint: string; Demo: ComponentType<D
         hint: "Click the terminal to type. ↑↓ history, Tab completes, Ctrl-C cancels, Esc leaves.",
         Demo: dynamic(() => import("./minishell/terminal"), { ssr: false, loading }),
     },
+    ft_irc: {
+        title: "ircserv",
+        hint: "Register with PASS, NICK and USER, then JOIN #42. Ask alice to op you before trying KICK.",
+        Demo: dynamic(() => import("./ft-irc/ft-irc-demo"), { ssr: false, loading }),
+    },
 };
 
 function useActive(ref: React.RefObject<HTMLElement | null>): boolean {
