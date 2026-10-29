@@ -29,6 +29,10 @@ function GunLoadingFallback(): React.JSX.Element {
     );
 }
 
+// three.js is ~1 MB: fetch it only once the visitor reaches for the toggle (hover/focus/touch),
+// never on page load. Turning shoot mode on renders GunViewer, which also triggers the load.
+const warmGunViewer = () => void import("./gun-viewer");
+
 const GunViewer = dynamic(() => import("./gun-viewer"), {
     ssr: false,
     loading: () => <GunLoadingFallback />,
@@ -317,11 +321,6 @@ export default function FloatingShootToggle(): React.JSX.Element {
     React.useEffect(() => {
         if (!isOn) setHoverShootControls(false);
     }, [isOn]);
-
-    React.useEffect(() => {
-        // Warm up the JS chunk so first render appears faster.
-        void import("./gun-viewer");
-    }, []);
 
     React.useEffect(() => {
         const mediaQuery = window.matchMedia("(min-width: 1024px)");
@@ -749,7 +748,12 @@ export default function FloatingShootToggle(): React.JSX.Element {
                     <div
                         className="pointer-events-auto cursor-pointer"
                         data-shoot-controls="1"
-                        onMouseEnter={() => setHoverShootControls(true)}
+                        onMouseEnter={() => {
+                            setHoverShootControls(true);
+                            warmGunViewer();
+                        }}
+                        onFocus={warmGunViewer}
+                        onTouchStart={warmGunViewer}
                         onMouseLeave={() => setHoverShootControls(false)}
                     >
                         <button
