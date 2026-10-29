@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DemoProps } from "../project-demo";
 import { MAPS } from "./maps";
-import { makeTextures, parseCub, render, step, type Player } from "./raycast";
+import { parseCub, render, step, type Player, type Texture } from "./raycast";
+import { loadFaceTextures } from "./textures";
 
 // The repo moves 0.01 tile and turns 0.5° per frame from an uncapped mlx loop, so its real speed depends on the
 // machine. The demo uses fixed per-second speeds (≈ that step at 180 fps) so every screen feels the same.
@@ -21,7 +22,14 @@ const KEYMAP: Record<string, [keyof Keys, number]> = {
 export default function Cub3dDemo({ active }: DemoProps) {
     const [mapName, setMapName] = useState<keyof typeof MAPS>("big");
     const map = useMemo(() => parseCub(MAPS[mapName]), [mapName]);
-    const textures = useMemo(() => makeTextures(), []);
+    const [textures, setTextures] = useState<{ map: typeof map; list: Texture[] } | null>(null);
+    useEffect(() => {
+        let live = true;
+        loadFaceTextures(map).then((list) => live && setTextures({ map, list }));
+        return () => {
+            live = false;
+        };
+    }, [map]);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const miniRef = useRef<HTMLCanvasElement>(null);
     const player = useRef<Player>(map.spawn);
@@ -37,7 +45,9 @@ export default function Cub3dDemo({ active }: DemoProps) {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext("2d");
-        if (!canvas || !ctx || !active) return;
+        // Wait for this map's textures (the repo's XPMs, decoded once) before drawing.
+        if (!canvas || !ctx || !active || textures?.map !== map) return;
+        const faceTextures = textures.list;
         function drawMinimap() {
             const c = miniRef.current?.getContext("2d");
             if (!c || miniRef.current?.classList.contains("hidden")) return;
@@ -66,7 +76,7 @@ export default function Cub3dDemo({ active }: DemoProps) {
             const dt = Math.min(0.05, (now - last) / 1000);
             last = now;
             player.current = step(map, player.current, keys.current, MOVE_PER_S * dt, TURN_PER_S * dt);
-            render(buf, W, H, map, player.current, textures);
+            render(buf, W, H, map, player.current, faceTextures);
             ctx.putImageData(img, 0, 0);
             drawMinimap();
             raf = requestAnimationFrame(frame);

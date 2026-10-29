@@ -6,7 +6,9 @@
 
 export type Rgb = readonly [number, number, number];
 export type Player = { x: number; y: number; angle: number };
-export type CubMap = { grid: readonly string[]; cols: number; rows: number; floor: Rgb; ceiling: Rgb; spawn: Player };
+/** Texture file names per face, as written in the .cub (NO, SO, EA, WE = render indexes 0..3). */
+export type Faces = readonly [string, string, string, string];
+export type CubMap = { grid: readonly string[]; cols: number; rows: number; floor: Rgb; ceiling: Rgb; spawn: Player; faces: Faces };
 export type Texture = { size: number; px: Uint32Array };
 
 const FOV = (60 * Math.PI) / 180;
@@ -27,6 +29,11 @@ export function parseCub(text: string): CubMap {
         if (!parts || parts.length !== 3 || parts.some((n) => !(n >= 0 && n <= 255))) throw new Error("rgb range error");
         return [parts[0], parts[1], parts[2]];
     };
+    const face = (key: string) => {
+        const path = lines.find((l) => l.trim().startsWith(`${key} `))?.trim().split(/\s+/)[1];
+        if (!path) throw new Error("Error texture file path not found");
+        return path.slice(path.lastIndexOf("/") + 1).replace(/\.xpm$/, "");
+    };
     const configKeys = /^\s*(NO|SO|WE|EA|F|C)\s/;
     const raw = lines.filter((l) => l.trim() !== "" && !configKeys.test(l)).map((l) => l.replace(/\s+$/, ""));
     if (raw.length === 0) throw new Error("Error, map not found");
@@ -44,7 +51,7 @@ export function parseCub(text: string): CubMap {
     const grid = raw.map((row) => row.replace(/[NSEW]/, "0").replace(/ /g, "1").padEnd(cols, "1"));
     if (/[^1]/.test(grid[0])) throw new Error("error (first map row should all 1)");
     if (/[^1]/.test(grid[grid.length - 1])) throw new Error("error (last map row should be all 1)");
-    return { grid, cols, rows: grid.length, floor: rgb("F"), ceiling: rgb("C"), spawn };
+    return { grid, cols, rows: grid.length, floor: rgb("F"), ceiling: rgb("C"), spawn, faces: [face("NO"), face("SO"), face("EA"), face("WE")] };
 }
 
 const isWall = (map: CubMap, x: number, y: number) => {
@@ -119,25 +126,4 @@ export function render(buf: Uint32Array, w: number, h: number, map: CubMap, p: P
             buf[y * w + col] = t.px[ty * t.size + tx];
         }
     }
-}
-
-/** Four 64×64 tech-panel textures, one tint per wall face (the repo's own XPMs are third-party art). */
-export function makeTextures(): Texture[] {
-    const tints: Rgb[] = [[120, 140, 150], [150, 130, 110], [110, 145, 125], [140, 120, 150]];
-    return tints.map((tint) => {
-        const size = 64;
-        const px = new Uint32Array(size * size);
-        for (let y = 0; y < size; y++) {
-            for (let x = 0; x < size; x++) {
-                const seam = x % 32 === 0 || y % 16 === 0;
-                const bevel = x % 32 === 1 || y % 16 === 1 ? 1.25 : x % 32 === 31 || y % 16 === 15 ? 0.7 : 1;
-                const rivet = (x % 32 === 4 || x % 32 === 27) && (y % 16 === 4 || y % 16 === 11);
-                const noise = 0.92 + (((x * 7 + y * 13) ^ (x * y)) & 7) / 60;
-                const k = seam ? 0.35 : rivet ? 1.45 : bevel * noise;
-                const c = (v: number) => Math.min(255, Math.round(v * k));
-                px[y * size + x] = pack([c(tint[0]), c(tint[1]), c(tint[2])]);
-            }
-        }
-        return { size, px };
-    });
 }
