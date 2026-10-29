@@ -10,11 +10,12 @@ import inceptionCover from "@/src/projects/inception/cover.webp";
 import minishellCover from "@/src/projects/minishell/cover.webp";
 import pushSwapCover from "@/src/projects/push_swap/cover.webp";
 import cub3dCover from "@/src/projects/cub3d/cover.webp";
+import soLongCover from "@/src/projects/so_long/cover.webp";
 import cub3dCorridor from "@/src/projects/cub3d/corridor.webp";
 import cub3dRoom from "@/src/projects/cub3d/room.webp";
 
 /** Interactive preview on the project page; one lazily-loaded chunk per id (app/components/demos). */
-export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d";
+export type DemoId = "push_swap" | "minishell" | "inception" | "cub3d" | "so_long";
 
 export type ProjectScreenshot = { image: StaticImageData; caption: string };
 
@@ -128,6 +129,25 @@ export const projects: readonly Project[] = [
             { image: cub3dRoom, caption: "Textures change with the wall's facing direction" },
         ],
         demo: "cub3d",
+    },
+    {
+        slug: "so_long",
+        title: "so_long: a small 2D game",
+        description:
+            "A top-down 2D game in C with the MiniLibX graphics library: a king walks a brick dungeon, collects every bomb, and leaves through the door. The map comes from a .ber file of walls, floor, bombs, one exit and one start.\n\nBefore the game starts, the map is checked: it must be rectangular, closed by walls, contain exactly one player and one exit and at least one bomb, and a flood fill must reach every bomb and the exit. The demo below runs the same rules, ported to TypeScript, with the game's own sprites and maps.",
+        role: "Solo project",
+        highlights: [
+            "Map validation: rectangular, closed by walls, valid characters, one player, one exit, at least one collectible.",
+            "Flood fill from the player to prove every collectible and the exit can be reached.",
+            "Tile rendering with MiniLibX: 45-pixel sprites for floor, walls, the player, bombs, and a door that opens once every bomb is collected.",
+            "Move counter shown in the window, and keyboard controls with W A S D and the arrow keys.",
+        ],
+        tech: ["C", "MiniLibX", "Flood fill", "2D rendering"],
+        github: "https://github.com/Cardano04class/so_long",
+        featured: false,
+        year: "2024",
+        image: soLongCover,
+        demo: "so_long",
     },
     {
         slug: "push_swap",
